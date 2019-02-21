@@ -1,7 +1,7 @@
 package framework;
 
 public class Processo {
-	private String pid;
+	private String processoID;
 	private int tempoInicio;
 	private int tempoExec;
 
@@ -9,18 +9,18 @@ public class Processo {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Processo(String pid, int tempoInicio, int tempoExec) {
-		this.pid = pid;
+	public Processo(String processoID, int tempoInicio, int tempoExec) {
+		this.processoID = processoID;
 		this.tempoInicio = tempoInicio;
 		this.tempoExec = tempoExec;
 	}
 
-	public String getPid() {
-		return pid;
+	public String getProcessoID() {
+		return processoID;
 	}
 
-	public void setPid(String pid) {
-		this.pid = pid;
+	public void setProcessoID(String processoID) {
+		this.processoID = processoID;
 	}
 
 	public int getTempoInicio() {

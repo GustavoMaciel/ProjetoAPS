@@ -4,12 +4,7 @@ import java.util.Queue;
 
 public abstract class Escalonador {
 	
-	private Queue<Processo> fila;
-
-	public Escalonador() {
-		// TODO Auto-generated constructor stub
-	}
-	
+	protected Queue<Processo> fila;
 
 	public Queue<Processo> getFila() {
 		return fila;
@@ -19,8 +14,10 @@ public abstract class Escalonador {
 		this.fila = fila;
 	}
 
-	public void addProcesso(String pid, int tempoInicio, int tempoExec) {
-		fila.add(criarProcesso(pid, tempoInicio, tempoExec));
+	public Processo addProcesso(String pid, int tempoInicio, int tempoExec) {
+		Processo processo = criarProcesso(pid, tempoInicio, tempoExec);
+		fila.add(processo);
+		return processo;
 	}
 
 	public Processo criarProcesso(String pid, int tempoInicio, int tempoExec) {

@@ -1,11 +1,9 @@
 package framework;
 
-import java.util.Queue;
 
 public class EscalonadorRoundRobin extends Escalonador {
 	
 	private int quantum;
-	private Queue<Processo> fila;
 
 	public EscalonadorRoundRobin() {
 		// TODO Auto-generated constructor stub

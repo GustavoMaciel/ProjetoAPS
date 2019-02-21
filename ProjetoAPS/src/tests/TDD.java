@@ -11,25 +11,96 @@ import framework.TabelaResultante;
 
 class TDD {
 
+	// Walderlindo
+	/* Quantum 3 com 4 processos
+	 * P1 (0, 01) -> RFFFFFFFFFFF
+	 * P2 (0, 02) -> WRRFFFFFFFFF
+	 * P3 (0, 06) -> WWWRRRWWRRRF
+	 * P4 (2, 02) -> NNWWWWRRFFFF
+	 */
+	
+	/* Um processo apenas
+	 * P1 (0,10) -> P01 RRRRRRRRRRF
+	 */
+	
+	/* Dois processos, um seguido do outro, Quantum 3
+	 * P1 (0,03) -> P01 RRRFFFF
+	 * P2 (3,03) -> P02 NNNRRRF
+	 */
+	
+	/* Dois processos ao mesmo tempo e tamanho, Quantum 3
+	 * P1 (0,03) -> P01 RRRFFFF
+	 * P2 (0,03) -> P02 WWWRRRF
+	 */
+	
+	/* Quantum 3, dois procesos com intervalo sem processos rodando
+	 * P1 (0, 03) -> RRRFFFFF
+	 * P2 (5, 02) -> NNNNNRRF
+	 */
+	
+	// Herculano
+	/* Sem Processos
+	 * Fila vazia
+	 */
+	
+	/* Processo P2 inicia primeiro, ambos demoram para iniciar
+	 * P1 (5, 03) -> NNNNNWWRRRFF
+	 * P2 (4, 04) -> NNNNRRRWWWRF
+	 */
+	
+	/* Quantum 3, processo p2 não chegou mesmo finalizando o quantum de p1
+	 * P1 (0, 04) -> RRRRFFFF
+	 * P2 (4, 03) -> IIIIRRRF
+	 */
+	
+	/* Quantum 3 com 3 processos
+	 * P1 (3, 07) -> NNNWRRRRRRRF
+	 * P2 (0, 01) -> RFFFFFFFFFFF
+	 * P3 (1, 03) -> NRRRFFFFFFFF
+	 */
+	
+	
+	/*Quantum 0
+	 * P1 (0, 02) -> Erro quantum menor que 1
+	 * P2 (0, 03)
+	 */
+	
+	// Gustavson
+	/* Quantum menor que 0
+	 * P1 (0, 02) -> Erro quantum menor que 1
+	 */
+	
+	/* Quantum 5
+	 * P1 (1, 04) -> IWWWWRRRRFF
+	 * P2 (0, 06) -> RRRRRWWWWRF
+	 */
+	
+	/* Quantum 10 e processos com tempo necessário menor que o quantum
+	 *  P1 (0, 02) -> RRFFFFFF
+	 *  P2 (1, 01) -> IWWRFFFF
+	 *  P3 (0, 01) -> WWRFFFFF
+	 *  P4 (2, 03) -> IIWWRRRF
+	 */
+	
+	/* Processo finalizado no meio da execução, quantum 4
+	 * P1 (0, 05) -> RRRXF
+	 * P2 (0, 01) -> WWWRF
+	 */
+	
 	@Test
 	void testRoundRobin() {
 		
-		/*
-			P1 RF
-			P2 WRRF
-			P3 WWWRRRWWRRRF
-			P4 NNWWWWRRF
-		 */
 		
-		EscalonadorRoundRobin comp = new EscalonadorRoundRobin(3);
-		comp.addProcesso("P1", 0, 1);
-		comp.addProcesso("P2", 0, 2);
-		comp.addProcesso("P3", 0, 6);
-		comp.addProcesso("P4", 3, 2);
+		EscalonadorRoundRobin escalonador = new EscalonadorRoundRobin(3);
+		assertEquals(3, escalonador.getQuantum());
+		Processo p1 = escalonador.addProcesso("P1", 0, 1);
+		Processo p2 = escalonador.addProcesso("P2", 0, 2);
+		Processo p3 = escalonador.addProcesso("P3", 0, 6);
+		Processo p4 = escalonador.addProcesso("P4", 3, 2);
 		
-		TabelaResultante tabela = comp.rodar();
-		assertEquals(StatusProcesso.Executando, comp.checarStatus("P1", 0));
-		assertEquals("P1 RF\n", tabela.linhaProcesso("P1"));
+		TabelaResultante tabela = escalonador.rodar();
+		assertEquals(StatusProcesso.Executando, escalonador.checarStatus("P1", 0));
+		assertEquals("P1 RF\n", tabela.linhaProcesso(p1));
 		assertEquals("P1 RF\n" + 
 				"P2 WRRF\n" + 
 				"P3 WWWRRRWWRRRF\n" + 
@@ -40,10 +111,10 @@ class TDD {
 	@Test
 	void testProcesso() {
 		Processo pro = new Processo();
-		pro.setPid("P1");
+		pro.setProcessoID("P1");
 		pro.setTempoExec(3);
 		pro.setTempoInicio(0);
-		assertEquals("P1", pro.getPid());
+		assertEquals("P1", pro.getProcessoID());
 		assertEquals(3, pro.getTempoExec());
 		assertEquals(0, pro.getTempoInicio());
 	}
