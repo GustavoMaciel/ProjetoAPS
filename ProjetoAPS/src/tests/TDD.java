@@ -18,26 +18,113 @@ class TDD {
 	 * P3 (0, 06) -> WWWRRRWWRRRF
 	 * P4 (2, 02) -> NNWWWWRRFFFF
 	 */
+	@Test
+	void testRoundRobinQuantum3com4processos() {
+				
+		EscalonadorRoundRobin escalonador = new EscalonadorRoundRobin(3);
+		assertEquals(3, escalonador.getQuantum());
+		Processo p1 = escalonador.addProcesso("P1", 0, 1);
+		Processo p2 = escalonador.addProcesso("P2", 0, 2);
+		Processo p3 = escalonador.addProcesso("P3", 0, 6);
+		Processo p4 = escalonador.addProcesso("P4", 3, 2);
+		
+		TabelaResultante tabela = escalonador.rodar();
+		assertEquals(StatusProcesso.Executando, escalonador.checarStatus("P1", 0));
+		assertEquals(StatusProcesso.Executando, escalonador.checarStatus("P2", 2));
+		assertEquals(StatusProcesso.Executando, escalonador.checarStatus("P3", 4));
+		assertEquals(StatusProcesso.Executando, escalonador.checarStatus("P4", 7));
+		assertEquals("P1 RFFFFFFFFFFF", tabela.linhaProcesso(p1));
+		assertEquals("P1 WRRFFFFFFFFF\n" + 
+				     "P2 WRRFFFFFFFFF\n" + 
+				     "P3 WWWRRRWWRRRF\n" + 
+				     "P4 NNWWWWRRFFFF\n", tabela.resultado());
+		}
 	
-	/* Um processo apenas
+	/* Um processo apenas - Quantum de 4
 	 * P1 (0,10) -> P01 RRRRRRRRRRF
 	 */
+	
+	@Test
+	void testRoundRobinComUmProcessoApenas() {
+		EscalonadorRoundRobin escalonador = new EscalonadorRoundRobin(4);
+		assertEquals(4, escalonador.getQuantum());
+		Processo p1 = escalonador.addProcesso("P1", 0, 10);
+		
+		TabelaResultante tabela = escalonador.rodar();
+		assertEquals(StatusProcesso.Executando, escalonador.checarStatus("P1", 0));
+		assertEquals(StatusProcesso.Executando, escalonador.checarStatus("P1", 5));
+		assertEquals("P1 RRRRRRRRRRF", tabela.linhaProcesso(p1));
+		assertEquals("P1 RRRRRRRRRRF\n", tabela.resultado());
+		
+		}
 	
 	/* Dois processos, um seguido do outro, Quantum 3
 	 * P1 (0,03) -> P01 RRRFFFF
 	 * P2 (3,03) -> P02 NNNRRRF
 	 */
+	@Test
+	void testRoundRobinComDoisProcessosSeguidos() {
+		EscalonadorRoundRobin escalonador = new EscalonadorRoundRobin(3);
+		assertEquals(3, escalonador.getQuantum());
+		Processo p1 = escalonador.addProcesso("P1", 0, 3);
+		Processo p2 = escalonador.addProcesso("P1", 3, 3);
+		
+		TabelaResultante tabela = escalonador.rodar();
+		assertEquals(StatusProcesso.Executando, escalonador.checarStatus("P1", 0));
+		assertEquals(StatusProcesso.Executando, escalonador.checarStatus("P1", 4));
+		assertEquals("P1 RRRFFFF", tabela.linhaProcesso(p1));
+		assertEquals("P1 RRRFFFF\n" + 
+			         "P2 NNNRRRF\n", tabela.resultado());
+		}
 	
 	/* Dois processos ao mesmo tempo e tamanho, Quantum 3
 	 * P1 (0,03) -> P01 RRRFFFF
 	 * P2 (0,03) -> P02 WWWRRRF
 	 */
+	@Test
+	void testRoundRobinComDoisProcessosAoMesmoTempo() {
+		EscalonadorRoundRobin escalonador = new EscalonadorRoundRobin(3);
+		assertEquals(3, escalonador.getQuantum());
+		Processo p1 = escalonador.addProcesso("P1", 0, 3);
+		Processo p2 = escalonador.addProcesso("P1", 0, 3);
+		
+		TabelaResultante tabela = escalonador.rodar();
+		assertEquals(StatusProcesso.Executando, escalonador.checarStatus("P1", 0));
+		assertEquals(StatusProcesso.Executando, escalonador.checarStatus("P1", 4));
+		assertEquals("P1 RRRFFFF", tabela.linhaProcesso(p1));
+		assertEquals("P1 RRRFFFF\n" + 
+			         "P2 WWWRRRF\n", tabela.resultado());
+		}
 	
 	/* Quantum 3, dois procesos com intervalo sem processos rodando
 	 * P1 (0, 03) -> RRRFFFFF
 	 * P2 (5, 02) -> NNNNNRRF
 	 */
-	
+	@Test
+	void testRoundRobinComDoisProcessosComIntervaloSemProcessosRodando() {
+		EscalonadorRoundRobin escalonador = new EscalonadorRoundRobin(3);
+		assertEquals(3, escalonador.getQuantum());
+		Processo p1 = escalonador.addProcesso("P1", 0, 3);
+		Processo p2 = escalonador.addProcesso("P1", 5, 2);
+		
+		TabelaResultante tabela = escalonador.rodar();
+		assertEquals(StatusProcesso.Executando, escalonador.checarStatus("P1", 0));
+		assertEquals(StatusProcesso.Executando, escalonador.checarStatus("P1", 6));
+		assertEquals(StatusProcesso.Executando, escalonador.checarStatus("P1", 7)); 
+		//ter certeza se o processo ta realmente rodando no tempo seguinte
+		assertEquals("P1 RRRFFFFF", tabela.linhaProcesso(p1));
+		assertEquals("P1 RRRFFFFF\n" + 
+			         "P2 NNNNNRRF\n", tabela.resultado());
+		}
+	/* Processo que nÃ£o existe na lista
+	 * 
+	 */
+	//@Test
+	//void testRoundRobinComDoisProcessosComIntervaloSemProcessosRodando() {
+		//EscalonadorRoundRobin escalonador = new EscalonadorRoundRobin(3);
+		//assertEquals(3, escalonador.getQuantum());
+		
+		//}
 	// Herculano
 	/* Sem Processos
 	 * Fila vazia
@@ -48,7 +135,7 @@ class TDD {
 	 * P2 (4, 04) -> NNNNRRRWWWRF
 	 */
 	
-	/* Quantum 3, processo p2 não chegou mesmo finalizando o quantum de p1
+	/* Quantum 3, processo p2 nï¿½o chegou mesmo finalizando o quantum de p1
 	 * P1 (0, 04) -> RRRRFFFF
 	 * P2 (4, 03) -> IIIIRRRF
 	 */
@@ -75,14 +162,14 @@ class TDD {
 	 * P2 (0, 06) -> RRRRRWWWWRF
 	 */
 	
-	/* Quantum 10 e processos com tempo necessário menor que o quantum
+	/* Quantum 10 e processos com tempo necessï¿½rio menor que o quantum
 	 *  P1 (0, 02) -> RRFFFFFF
 	 *  P2 (1, 01) -> IWWRFFFF
 	 *  P3 (0, 01) -> WWRFFFFF
 	 *  P4 (2, 03) -> IIWWRRRF
 	 */
 	
-	/* Processo finalizado no meio da execução, quantum 4
+	/* Processo finalizado no meio da execuï¿½ï¿½o, quantum 4
 	 * P1 (0, 05) -> RRRXF
 	 * P2 (0, 01) -> WWWRF
 	 */
