@@ -1,5 +1,6 @@
 package framework;
 
+import exceptions.QuantumMenorQueUmException;
 
 public class EscalonadorRoundRobin extends Escalonador {
 	
