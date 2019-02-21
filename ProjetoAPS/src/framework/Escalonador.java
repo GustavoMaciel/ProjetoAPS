@@ -1,16 +1,16 @@
 package framework;
 
-import java.util.Queue;
+import java.util.ArrayList;
 
 public abstract class Escalonador {
 	
-	protected Queue<Processo> fila;
+	protected ArrayList<Processo> fila = new ArrayList<Processo>();
 
-	public Queue<Processo> getFila() {
+	public ArrayList<Processo> getFila() {
 		return fila;
 	}
 
-	public void setFila(Queue<Processo> fila) {
+	public void setFila(ArrayList<Processo> fila) {
 		this.fila = fila;
 	}
 
