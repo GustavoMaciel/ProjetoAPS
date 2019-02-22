@@ -134,59 +134,117 @@ class TDD {
 	}
 	
 	// Herculano
-		/* Sem Processos
-		 * Fila vazia
-		 */
-		@Test
-		public void escalonadorSemProcessos() {
-			EscalonadorRoundRobin escalonador = new EscalonadorRoundRobin();
-			assertEquals(0, escalonador.getFila().size());
-		}
+	/* Sem Processos
+	 * Fila vazia
+	 */
+	@Test
+	public void escalonadorSemProcessos() {
+		EscalonadorRoundRobin escalonador = new EscalonadorRoundRobin();
+		assertEquals(0, escalonador.getFila().size());
+	}
+	
+	/* Processo P2 inicia primeiro, ambos demoram para iniciar
+	 * P1 (5, 03) -> NNNNNWWRRRFF
+	 * P2 (4, 04) -> NNNNRRRWWWRF
+	 */
+	@Test
+	public void processosDemoramMuitoPraChegar() {
+		EscalonadorRoundRobin escalonador = new EscalonadorRoundRobin();
+		Processo p1 = escalonador.addProcesso("P1",5, 03);
+		Processo p2 = escalonador.addProcesso("P2",4, 04);
 		
-		/* Processo P2 inicia primeiro, ambos demoram para iniciar
-		 * P1 (5, 03) -> NNNNNWWRRRFF
-		 * P2 (4, 04) -> NNNNRRRWWWRF
-		 */
-		@Test
-		public void processosDemoramMuitoPraChegar() {
-			EscalonadorRoundRobin escalonador = new EscalonadorRoundRobin();
-			escalonador.addProcesso("P1",5, 03);
-			escalonador.addProcesso("P2",4, 04);
+		TabelaResultante tabela = escalonador.rodar();
 
-			assertEquals(StatusProcesso.NaoExistente, escalonador.checarStatus("P1", 0));
-			assertEquals(StatusProcesso.NaoExistente, escalonador.checarStatus("P1", 4));
+		assertEquals(StatusProcesso.NaoExistente, escalonador.checarStatus("P1", 0));
+		assertEquals(StatusProcesso.NaoExistente, escalonador.checarStatus("P1", 4));
 
-			assertEquals(StatusProcesso.NaoExistente, escalonador.checarStatus("P2", 0));
-			assertEquals(StatusProcesso.NaoExistente, escalonador.checarStatus("P2", 3));
-		}
+		assertEquals(StatusProcesso.NaoExistente, escalonador.checarStatus("P2", 0));
+		assertEquals(StatusProcesso.NaoExistente, escalonador.checarStatus("P2", 3));
 		
-		/* Quantum 3, processo p2 n�o chegou mesmo finalizando o quantum de p1
-		 * P1 (0, 04) -> RRRRFFFF
-		 * P2 (4, 03) -> IIIIRRRF
-		 */
-		@Test
-		public void processoP2ChegaMuitoDepoisDoP1Terminar() {
-			EscalonadorRoundRobin escalonador = new EscalonadorRoundRobin();
-			escalonador.setQuantum(3);
-			
-			assertEquals(StatusProcesso.Executando, escalonador.checarStatus("P1", 0));
-			assertEquals(StatusProcesso.NaoExistente, escalonador.checarStatus("P2", 0));
-			assertEquals(StatusProcesso.Executando, escalonador.checarStatus("P2", 4));
-			assertEquals(StatusProcesso.Finalizados, escalonador.checarStatus("P1", 4));
-			
-		}
+		assertEquals("P1 NNNNNWWRRRFF", tabela.linhaProcesso(p1));
+		assertEquals("P2 NNNNRRRWWWRF", tabela.linhaProcesso(p2));
+		assertEquals("P1 NNNNNWWRRRFF\n" + 
+			         "P2 NNNNRRRWWWRF\n", tabela.resultado());
+		
+	}
+	
+	/* Quantum 3, processo p2 n�o chegou mesmo finalizando o quantum de p1
+	 * P1 (0, 04) -> RRRRFFFF
+	 * P2 (4, 03) -> IIIIRRRF
+	 */
+	@Test
+	public void processoP2ChegaMuitoDepoisDoP1Terminar() {
+		EscalonadorRoundRobin escalonador = new EscalonadorRoundRobin();
+		escalonador.setQuantum(3);
+		
+		TabelaResultante tabela = escalonador.rodar();
+		
+		Processo p1 = escalonador.addProcesso("P1", 0, 04);
+		Processo p2 = escalonador.addProcesso("P2", 0, 03);
+		
+		assertEquals(StatusProcesso.Executando, escalonador.checarStatus("P1", 0));
+		assertEquals(StatusProcesso.NaoExistente, escalonador.checarStatus("P2", 0));
+		assertEquals(StatusProcesso.Executando, escalonador.checarStatus("P2", 4));
+		assertEquals(StatusProcesso.Finalizados, escalonador.checarStatus("P1", 4));
+		
+		assertEquals("P1 RRRRFFFF", tabela.linhaProcesso(p1));
+		assertEquals("P2 NNNNRRRF", tabela.linhaProcesso(p2));
+		assertEquals("P1 RRRRFFFF\n" + 
+			         "P2 NNNNRRRF\n", tabela.resultado());
+		
+	}
 	
 	/* Quantum 3 com 3 processos
 	 * P1 (3, 07) -> NNNWRRRRRRRF
 	 * P2 (0, 01) -> RFFFFFFFFFFF
 	 * P3 (1, 03) -> NRRRFFFFFFFF
 	 */
+	@Test
+	public void quantum3Com3Processos() {
+		EscalonadorRoundRobin escalonador = new EscalonadorRoundRobin();
+		escalonador.setQuantum(3);
+		
+		TabelaResultante tabela = escalonador.rodar();
+		
+		Processo p1 = escalonador.addProcesso("P1", 3, 07);
+		Processo p2 = escalonador.addProcesso("P2", 0, 01);
+		Processo p3 = escalonador.addProcesso("P3", 1, 03);
+		
+		
+		// tempo1
+		assertEquals(StatusProcesso.NaoExistente, escalonador.checarStatus("P1", 0));
+		assertEquals(StatusProcesso.Executando, escalonador.checarStatus("P2", 0));
+		assertEquals(StatusProcesso.NaoExistente, escalonador.checarStatus("P3", 0));
+		
+		// tempo5
+		assertEquals(StatusProcesso.Executando, escalonador.checarStatus("P1", 4));
+		
+		assertEquals("P1 NNNWRRRRRRRF", tabela.linhaProcesso(p1));
+		assertEquals("P2 RFFFFFFFFFFF", tabela.linhaProcesso(p2));
+		assertEquals("P3 NRRRFFFFFFFF", tabela.linhaProcesso(p3));
+		
+		assertEquals("P1 NNNWRRRRRRRF\n" + 
+			         "P2 RFFFFFFFFFFF\n" +
+			         "P3 NRRRFFFFFFFF\n", tabela.resultado());
+		
+	}
 	
 	
 	/*Quantum 0
 	 * P1 (0, 02) -> Erro quantum menor que 1
 	 * P2 (0, 03)
 	 */
+	@Test
+	public void quantumComValorZero() {
+		EscalonadorRoundRobin escalonador = new EscalonadorRoundRobin();
+		escalonador.setQuantum(0);
+		assertEquals(0, escalonador.getQuantum());
+		
+		// Corrigir erro para lancar excecao
+		
+	}
+	
+	
 	
 	// Gustavson
 	/* Quantum menor que 0
