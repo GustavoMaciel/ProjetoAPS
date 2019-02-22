@@ -11,7 +11,10 @@ import framework.StatusProcesso;
 import framework.TabelaResultante;
 
 class TDD {
-
+    
+	//nvbsbjbcjksds
+	
+	
 	// Walderlindo
 	/* Quantum 3 com 4 processos
 	 * P1 (0, 01) -> RFFFFFFFFFFF
