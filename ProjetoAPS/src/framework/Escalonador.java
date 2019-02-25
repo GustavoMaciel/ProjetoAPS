@@ -2,7 +2,7 @@ package framework;
 
 import java.util.ArrayList;
 
-public abstract class Escalonador {
+public class Escalonador {
 	
 	protected ArrayList<Processo> fila = new ArrayList<Processo>();
 
@@ -29,6 +29,9 @@ public abstract class Escalonador {
 		return null;
 	}
 
-	public abstract TabelaResultante rodar();
+	public TabelaResultante rodar() {
+		//TODO ON SUBCLASS
+		return null;
+	}
 	
 }

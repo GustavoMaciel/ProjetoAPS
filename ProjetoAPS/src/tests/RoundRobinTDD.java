@@ -10,13 +10,7 @@ import framework.Processo;
 import framework.StatusProcesso;
 import framework.TabelaResultante;
 
-class TDD {
-    
-	//nvbsbjbcjksds
-	//testes
-	
-	
-	// Walderlindo
+class RoundRobinTDD {
 	/* Quantum 3 com 4 processos
 	 * P1 (0, 01) -> RFFFFFFFFFFF
 	 * P2 (0, 02) -> WRRFFFFFFFFF
@@ -137,7 +131,7 @@ class TDD {
 		}
 	}
 	
-	// Herculano
+
 	/* Sem Processos
 	 * Fila vazia
 	 */
@@ -249,8 +243,6 @@ class TDD {
 	}
 	
 	
-	
-	// Gustavson
 	/* Quantum menor que 0
 	 * P1 (0, 02) -> Erro quantum menor que 1
 	 */

@@ -10,7 +10,7 @@ public class EscalonadorRoundRobin extends Escalonador {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public EscalonadorRoundRobin(int quantum) {
+	public EscalonadorRoundRobin(int quantum) throws QuantumMenorQueUmException{
 		this.quantum = quantum;
 	}
 
