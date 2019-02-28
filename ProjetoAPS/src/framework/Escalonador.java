@@ -1,6 +1,8 @@
 package framework;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Escalonador {
 	
@@ -32,6 +34,16 @@ public class Escalonador {
 	public TabelaResultante rodar() {
 		//TODO ON SUBCLASS
 		return null;
+	}
+	
+	protected void odenarFila() {
+		Collections.sort(this.fila, new Comparator<Processo>() {
+			public int compare(Processo processo1, Processo processo2) {
+				Processo p1 = processo1;
+				Processo p2 = processo2;
+				return p1.getTempoInicio() < p2.getTempoInicio() ? -1 : (p1.getTempoInicio() > p2.getTempoInicio() ? +1 : 0);
+			}
+		});
 	}
 	
 }
