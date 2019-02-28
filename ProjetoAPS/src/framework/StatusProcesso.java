@@ -1,5 +1,5 @@
 package framework;
 
 public enum StatusProcesso {
-	NaoExistente, Esperando, Executando, Finalizados
+	NAOEXISTE, WAITING, RUNNING, FINISHED
 }
