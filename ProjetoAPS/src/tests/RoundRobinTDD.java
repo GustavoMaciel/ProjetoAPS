@@ -38,7 +38,7 @@ class RoundRobinTDD {
 		assertEquals(StatusProcesso.RUNNING, tabela.checarStatus("P3", 4));
 		assertEquals(StatusProcesso.RUNNING, tabela.checarStatus("P4", 7));
 		
-		assertEquals("P1 RFFFFFFFFFFF", tabela.linhaProcesso(p1));
+		assertEquals("P1 RF\n", tabela.linhaProcesso(p1));
 		
 		assertEquals("P1 RF\n" + 
 			     "P2 WRRF\n" + 
@@ -81,7 +81,7 @@ class RoundRobinTDD {
 		assertEquals(StatusProcesso.RUNNING, tabela.checarStatus("P1", 0));
 		assertEquals(StatusProcesso.RUNNING, tabela.checarStatus("P2", 4));
 		
-		assertEquals("P1 RRRFFFF", tabela.linhaProcesso(p1));
+		assertEquals("P1 RRRF\n", tabela.linhaProcesso(p1));
 		
 		assertEquals("P1 RRRF\n" + 
 		         "P2 NNNRRRF\n", tabela.resultado());
@@ -138,7 +138,7 @@ class RoundRobinTDD {
 	void testRoundRobinComDoisProcessoQueNãoExisteNaLista() {
 		EscalonadorRoundRobin escalonador = new EscalonadorRoundRobin(3);
 		Processo p1 = escalonador.addProcesso("P1", 0, 3);
-		Processo p2 = escalonador.addProcesso("P1", 5, 2);
+		Processo p2 = escalonador.addProcesso("P2", 5, 2);
 		TabelaResultante tabela = escalonador.rodar();
 		
 		assertEquals(StatusProcesso.RUNNING, tabela.checarStatus("P1", 0));
@@ -203,20 +203,20 @@ class RoundRobinTDD {
 		escalonador.setQuantum(3);
 		
 		Processo p1 = escalonador.addProcesso("P1", 0, 04);
-		Processo p2 = escalonador.addProcesso("P2", 0, 03);
+		Processo p2 = escalonador.addProcesso("P2", 4, 03);
 		
 		
 		TabelaResultante tabela = escalonador.rodar();
-		System.out.println(tabela.resultado());
+		//System.out.println(tabela.resultado());
 		
 		assertEquals(StatusProcesso.RUNNING, tabela.checarStatus("P1", 0));
 		assertEquals(StatusProcesso.NAOEXISTE, tabela.checarStatus("P2", 0));
 		
 		assertEquals("P1 RRRRF\n", tabela.linhaProcesso(p1));
-		assertEquals("P2 NNNNNNNNRRRF\n", tabela.linhaProcesso(p2));
+		assertEquals("P2 NNNNWRRRF\n", tabela.linhaProcesso(p2));
 		
 		assertEquals("P1 RRRRF\n" + 
-			         "P2 NNNNNNNNRRRF\n", tabela.resultado());
+			         "P2 NNNNWRRRF\n", tabela.resultado());
 		
 	}
 	
@@ -296,8 +296,8 @@ class RoundRobinTDD {
 	 */
 	@Test
 	void roundRobinQuantum5() {
-		EscalonadorRoundRobin esca = new EscalonadorRoundRobin(8);
-		assertEquals(8, esca.getQuantum());
+		EscalonadorRoundRobin esca = new EscalonadorRoundRobin(5);
+		assertEquals(5, esca.getQuantum());
 		Processo p1 = esca.addProcesso("P1", 1, 4);
 		Processo p2 = esca.addProcesso("P2", 0, 6);
 		TabelaResultante res = esca.rodar();
@@ -316,7 +316,7 @@ class RoundRobinTDD {
 	@Test
 	void roundRobinProcessosTempoMenorQueQuantum10() {
 		EscalonadorRoundRobin esca = new EscalonadorRoundRobin(10);
-		assertEquals(8, esca.getQuantum());
+		assertEquals(10, esca.getQuantum());
 		Processo p1 = esca.addProcesso("P1", 0, 9);
 		Processo p2 = esca.addProcesso("P2", 1, 6);
 		Processo p3 = esca.addProcesso("P3", 0, 9);
