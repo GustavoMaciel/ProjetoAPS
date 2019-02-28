@@ -26,11 +26,6 @@ public class Escalonador {
 		return new Processo(pid, tempoInicio, tempoExec);
 	}
 
-	public StatusProcesso checarStatus(String pid, int tempo) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public TabelaResultante rodar() {
 		//TODO ON SUBCLASS
 		return null;

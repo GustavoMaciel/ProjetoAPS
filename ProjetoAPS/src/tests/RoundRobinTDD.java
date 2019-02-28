@@ -33,10 +33,10 @@ class RoundRobinTDD {
 		Processo p4 = escalonador.addProcesso("P4", 3, 2);
 		
 		TabelaResultante tabela = escalonador.rodar();
-		assertEquals(StatusProcesso.RUNNING, escalonador.checarStatus("P1", 0));
-		assertEquals(StatusProcesso.RUNNING, escalonador.checarStatus("P2", 2));
-		assertEquals(StatusProcesso.RUNNING, escalonador.checarStatus("P3", 4));
-		assertEquals(StatusProcesso.RUNNING, escalonador.checarStatus("P4", 7));
+		assertEquals(StatusProcesso.RUNNING, tabela.checarStatus("P1", 0));
+		assertEquals(StatusProcesso.RUNNING, tabela.checarStatus("P2", 2));
+		assertEquals(StatusProcesso.RUNNING, tabela.checarStatus("P3", 4));
+		assertEquals(StatusProcesso.RUNNING, tabela.checarStatus("P4", 7));
 		
 		assertEquals("P1 RFFFFFFFFFFF", tabela.linhaProcesso(p1));
 		
@@ -78,8 +78,8 @@ class RoundRobinTDD {
 		
 		TabelaResultante tabela = escalonador.rodar();
 		
-		assertEquals(StatusProcesso.RUNNING, escalonador.checarStatus("P1", 0));
-		assertEquals(StatusProcesso.RUNNING, escalonador.checarStatus("P2", 4));
+		assertEquals(StatusProcesso.RUNNING, tabela.checarStatus("P1", 0));
+		assertEquals(StatusProcesso.RUNNING, tabela.checarStatus("P2", 4));
 		
 		assertEquals("P1 RRRFFFF", tabela.linhaProcesso(p1));
 		
@@ -99,8 +99,8 @@ class RoundRobinTDD {
 		Processo p2 = escalonador.addProcesso("P2", 0, 3);
 		
 		TabelaResultante tabela = escalonador.rodar();
-		assertEquals(StatusProcesso.RUNNING, escalonador.checarStatus("P1", 0));
-		assertEquals(StatusProcesso.RUNNING, escalonador.checarStatus("P2", 4));
+		assertEquals(StatusProcesso.RUNNING, tabela.checarStatus("P1", 0));
+		assertEquals(StatusProcesso.RUNNING, tabela.checarStatus("P2", 4));
 		
 		assertEquals("P1 RRRF\n", tabela.linhaProcesso(p1));
 		
@@ -141,11 +141,11 @@ class RoundRobinTDD {
 		Processo p2 = escalonador.addProcesso("P1", 5, 2);
 		TabelaResultante tabela = escalonador.rodar();
 		
-		assertEquals(StatusProcesso.RUNNING, escalonador.checarStatus("P1", 0));
-		assertEquals(StatusProcesso.RUNNING, escalonador.checarStatus("P2", 6));
+		assertEquals(StatusProcesso.RUNNING, tabela.checarStatus("P1", 0));
+		assertEquals(StatusProcesso.RUNNING, tabela.checarStatus("P2", 6));
 		
 		try{
-			assertEquals(StatusProcesso.RUNNING, escalonador.checarStatus("P3", 8));
+			assertEquals(StatusProcesso.RUNNING, tabela.checarStatus("P3", 8));
 		}catch(NullPointerException e ) {
 			//Corrigir erro de não existir processo na lista de processos
 		}
@@ -179,11 +179,11 @@ class RoundRobinTDD {
 		
 		TabelaResultante tabela = escalonador.rodar();
 
-		assertEquals(StatusProcesso.NAOEXISTE, escalonador.checarStatus("P1", 0));
-		assertEquals(StatusProcesso.NAOEXISTE, escalonador.checarStatus("P1", 4));
+		assertEquals(StatusProcesso.NAOEXISTE, tabela.checarStatus("P1", 0));
+		assertEquals(StatusProcesso.NAOEXISTE, tabela.checarStatus("P1", 4));
 
-		assertEquals(StatusProcesso.NAOEXISTE, escalonador.checarStatus("P2", 0));
-		assertEquals(StatusProcesso.NAOEXISTE, escalonador.checarStatus("P2", 3));
+		assertEquals(StatusProcesso.NAOEXISTE, tabela.checarStatus("P2", 0));
+		assertEquals(StatusProcesso.NAOEXISTE, tabela.checarStatus("P2", 3));
 		
 		assertEquals("P1 NNNNNWWRRRF\n", tabela.linhaProcesso(p1));
 		assertEquals("P2 NNNNRRRWWWRF\n", tabela.linhaProcesso(p2));
@@ -230,7 +230,7 @@ class RoundRobinTDD {
 		EscalonadorRoundRobin escalonador = new EscalonadorRoundRobin();
 		escalonador.setQuantum(3);
 		
-		TabelaResultante tabela = escalonador.rodar();
+		//TabelaResultante tabela = escalonador.rodar();
 		
 		Processo p1 = escalonador.addProcesso("P1", 3, 07);
 		Processo p2 = escalonador.addProcesso("P2", 0, 01);
@@ -239,9 +239,9 @@ class RoundRobinTDD {
 		
 		TabelaResultante tabela = escalonador.rodar();
 		// tempo1
-		assertEquals(StatusProcesso.NAOEXISTE, escalonador.checarStatus("P1", 0));
-		assertEquals(StatusProcesso.RUNNING, escalonador.checarStatus("P2", 0));
-		assertEquals(StatusProcesso.NAOEXISTE, escalonador.checarStatus("P3", 0));
+		assertEquals(StatusProcesso.NAOEXISTE, tabela.checarStatus("P1", 0));
+		assertEquals(StatusProcesso.RUNNING, tabela.checarStatus("P2", 0));
+		assertEquals(StatusProcesso.NAOEXISTE, tabela.checarStatus("P3", 0));
 		
 		// tempo5
 		assertEquals(StatusProcesso.RUNNING, tabela.checarStatus("P1", 4));
