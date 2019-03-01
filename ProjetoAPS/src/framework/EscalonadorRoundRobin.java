@@ -72,8 +72,10 @@ public class EscalonadorRoundRobin extends Escalonador {
 			// Se o processo que está atualmente na CPU ainda não está no tempo de iniciar ele deve ganhar o status de não existe
 			if (processoNaCPU.getTempoInicio() > tempoAtual) {
 				tabelaFinal.addStatus(processoNaCPU.getProcessoID(), StatusProcesso.NAOEXISTE, tempoAtual);
-				tempoAtual++;
 				this.fila.add(processoNaCPU);
+				if(processoNaCPU.equals(this.fila.get(this.fila.size()-1))) {
+					tempoAtual++;
+				}
 				continue;
 			}
 

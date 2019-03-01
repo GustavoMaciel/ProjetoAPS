@@ -119,8 +119,10 @@ class RoundRobinTDD {
 		
 		Processo p1 = escalonador.addProcesso("P1", 0, 3);
 		Processo p2 = escalonador.addProcesso("P2", 5, 2);
+		escalonador.addProcesso("P3", 6, 3);
 		
 		TabelaResultante tabela = escalonador.rodar();
+		System.out.println(tabela.resultado());
 		
 		assertEquals(StatusProcesso.RUNNING, tabela.checarStatus("P1", 0));
 		assertEquals(StatusProcesso.RUNNING, tabela.checarStatus("P2", 6));
@@ -129,7 +131,8 @@ class RoundRobinTDD {
 		//ter certeza se o processo ta realmente rodando no tempo seguinte
 		assertEquals("P1 RRRF\n", tabela.linhaProcesso(p1));
 		assertEquals("P1 RRRF\n" + 
-			         "P2 NNNNNRRF\n", tabela.resultado());
+			         "P2 NNNNRRF\n"+
+			         "P3 NNNNNWRRRF\n", tabela.resultado());
 		}
 	/* Processo que não existe na lista
 	 * 
