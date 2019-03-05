@@ -7,6 +7,7 @@ import framework.StatusProcesso;
 import framework.TabelaResultante;
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
@@ -62,6 +63,7 @@ public class EscalonadorGUI extends Application {
 
 	/**
 	 * Cria uma coluna de processos de acordo com os processos que estao na fila
+	 * 
 	 * @return
 	 */
 	private static VBox criaColunaDeProcessos() {
@@ -76,11 +78,10 @@ public class EscalonadorGUI extends Application {
 		}
 		return v;
 	}
-	
 
 	/**
 	 * Cria o histórico dos processo enforma de tabela colorida
-	 * */
+	 */
 	private static VBox criaHistoricoColorido() {
 
 		HBox HLinha = new HBox();
@@ -119,20 +120,37 @@ public class EscalonadorGUI extends Application {
 		}
 		return areaHistorico;
 	}
-	
+
 	/**
 	 * Metodo obrigatorio a ser chamado
-	 * */
+	 */
 	public static void addResultado(TabelaResultante tabelaResultante) {
 		tabela = tabelaResultante;
 		System.out.println(tabela.resultado());
 	}
-	
+
 	@Override
 	public void start(Stage primaryStage) {
 		inicializarComponentesGraficos();
 		criaHistoricoColorido();
 
+		// borderPane.setCenter(criaHistoricoColorido());
+
+		borderPane.setPadding(new Insets(20, 20, 20, 20));
+		VBox hTitle = new VBox();
+		hTitle.getChildren().add(new Label("De Hero"));
+
+		hTitle.setStyle("-fx-background-color: #336699;");
+		borderPane.setLeft(hTitle);
+		borderPane.setCenter(criaHistoricoColorido());
+		Scene myScene = new Scene(borderPane, 500, 200);
+		primaryStage.setScene(myScene);
+		primaryStage.show();
+
+	}
+
+	public void run(String[] args) {
+		launch(args);
 	}
 
 }
