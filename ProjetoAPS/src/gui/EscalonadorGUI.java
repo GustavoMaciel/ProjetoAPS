@@ -16,9 +16,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class EscalonadorGUI extends Application {
+	private static int TEMPO_EXECUCAO = 30;
 
 	private static TabelaResultante tabela;
 	private static VBox areaHistorico;
@@ -37,31 +40,43 @@ public class EscalonadorGUI extends Application {
 	 * Cria a regua
 	 */
 	private static VBox criaRegua() {
-		Rectangle transparent;
-		
+		//Rectangle transparent;
+		Text text;
 		HBox numeros = new HBox();
 		HBox regua = new HBox();
+		// cima, direita, baixo, esquerda
+		regua.setPadding(new Insets(0, 0, 0, 6));
+		numeros.setPadding(new Insets(0, 0, 0, 4));
+		
 		Separator s;
-		Label l;
+		Text l;
+		
+		Label label;
 
-		for (int i = 0; i < 20; i++) {
-			l = new Label("" + ("|"));
+		for (int i = 0; i < TEMPO_EXECUCAO; i++) {
+			label = new Label(""+i);
+			l = new Text("|");
+			l.setFont(Font.font("Monospaced", 10));
+			text = new Text(50, 150, i+" ");
+			text.setFont(Font.font("Monospaced", 16));
 			
-			transparent = new Rectangle(20, 20);
-			transparent.setFill(Color.TRANSPARENT);
-			numeros.getChildren().add(transparent);
-			numeros.getChildren().add(new Label(""+i));
-			
-			if (i < 10) {
-				//l = new Label("0" + (i));
+			if (i < 9) {
+				// cima, direita, baixo, esquerda
+				label.setPadding(new Insets(0, 13, 0, 0));
+			} else {
+				// cima, direita, baixo, esquerda
+				label.setPadding(new Insets(0, 5, 0, 0));
 			}
-
+			
+			label.setMinWidth(10);
+			label.setMaxHeight(10);
+			numeros.getChildren().add(label);
+			
 			s = new Separator();
 
-			s.setMinWidth(20.0);
-			s.setMaxWidth(20.0);
-
-			l.setPadding(new Insets(-5, 0, 0, 0));
+			s.setMinWidth(15);
+			s.setMaxWidth(15);
+			
 			regua.getChildren().add(l);
 			regua.getChildren().add(s);
 
@@ -97,6 +112,7 @@ public class EscalonadorGUI extends Application {
 	private static VBox criaHistoricoColorido() {
 
 		HBox HLinha = new HBox();
+		
 		// criaRegua();
 		areaHistorico.getChildren().add(criaRegua());
 
@@ -107,21 +123,29 @@ public class EscalonadorGUI extends Application {
 		for (int i = 0; i < linhas.length; i++) {
 
 			rect = new Rectangle(20, 20);
+			HBox container = new HBox();
+			container.getChildren().add(rect);
+			
+			
+			// cima, direita, baixo, esquerda
+			HLinha.setPadding(new Insets(2, 2, 0, 10));
+			container.setPadding(new Insets(0, 2, 0, 0));
+			
 			if (linhas[i] == StatusProcesso.NAOEXISTE.toString().charAt(0)) {// inexistente
 				rect.setFill(Color.web("#211919"));
-				HLinha.getChildren().add(rect);
+				HLinha.getChildren().add(container);
 
 			} else if (linhas[i] == StatusProcesso.RUNNING.toString().charAt(0)) { // running
 				rect.setFill(Color.web("#77C938"));
-				HLinha.getChildren().add(rect);
+				HLinha.getChildren().add(container);
 
 			} else if (linhas[i] == StatusProcesso.WAITING.toString().charAt(0)) { // esperando
 				rect.setFill(Color.web("#FFFF19"));
-				HLinha.getChildren().add(rect);
+				HLinha.getChildren().add(container);
 
 			} else if (linhas[i] == StatusProcesso.FINISHED.toString().charAt(0)) { // finalizado
 				rect.setFill(Color.web("#EC0C0C"));
-				HLinha.getChildren().add(rect);
+				HLinha.getChildren().add(container);
 
 				// adicionar o anterior
 				areaHistorico.getChildren().add(HLinha);
