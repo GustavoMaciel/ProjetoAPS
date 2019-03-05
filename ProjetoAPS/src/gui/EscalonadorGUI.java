@@ -56,6 +56,14 @@ public class EscalonadorGUI extends Application {
 		return regua;
 	}
 
+	/**
+	 * Metodo obrigatorio a ser chamado
+	 * */
+	public static void addResultado(TabelaResultante tabelaResultante) {
+		tabela = tabelaResultante;
+		System.out.println(tabela.resultado());
+	}
+	
 	@Override
 	public void start(Stage primaryStage) {
 		inicializarComponentesGraficos();
