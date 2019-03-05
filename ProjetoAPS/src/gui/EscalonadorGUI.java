@@ -3,6 +3,7 @@ package gui;
 import java.util.ArrayList;
 
 import framework.Processo;
+import framework.StatusProcesso;
 import framework.TabelaResultante;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -12,6 +13,8 @@ import javafx.scene.control.Separator;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class EscalonadorGUI extends Application {
@@ -74,6 +77,49 @@ public class EscalonadorGUI extends Application {
 		return v;
 	}
 	
+
+	/**
+	 * Cria o histórico dos processo enforma de tabela colorida
+	 * */
+	private static VBox criaHistoricoColorido() {
+
+		HBox HLinha = new HBox();
+		// criaRegua();
+		areaHistorico.getChildren().add(criaRegua());
+
+		char[] linhas = tabela.resultado().toCharArray();
+		// System.out.println(";"+linhas);
+		Rectangle rect;
+
+		for (int i = 0; i < linhas.length; i++) {
+
+			rect = new Rectangle(20, 20);
+			if (linhas[i] == StatusProcesso.NAOEXISTE.toString().charAt(0)) {// inexistente
+				rect.setFill(Color.web("#211919"));
+				HLinha.getChildren().add(rect);
+
+			} else if (linhas[i] == StatusProcesso.RUNNING.toString().charAt(0)) { // running
+				rect.setFill(Color.web("#77C938"));
+				HLinha.getChildren().add(rect);
+
+			} else if (linhas[i] == StatusProcesso.WAITING.toString().charAt(0)) { // esperando
+				rect.setFill(Color.web("#FFFF19"));
+				HLinha.getChildren().add(rect);
+
+			} else if (linhas[i] == StatusProcesso.FINISHED.toString().charAt(0)) { // finalizado
+				rect.setFill(Color.web("#EC0C0C"));
+				HLinha.getChildren().add(rect);
+
+				// adicionar o anterior
+				areaHistorico.getChildren().add(HLinha);
+				// criar novo HBox
+				HLinha = new HBox();
+
+			}
+		}
+		return areaHistorico;
+	}
+	
 	/**
 	 * Metodo obrigatorio a ser chamado
 	 * */
@@ -85,6 +131,7 @@ public class EscalonadorGUI extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		inicializarComponentesGraficos();
+		criaHistoricoColorido();
 
 	}
 
