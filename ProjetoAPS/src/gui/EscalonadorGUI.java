@@ -132,17 +132,21 @@ public class EscalonadorGUI extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		inicializarComponentesGraficos();
-		criaHistoricoColorido();
+		VBox historico = criaHistoricoColorido();
 
 		// borderPane.setCenter(criaHistoricoColorido());
 
-		borderPane.setPadding(new Insets(20, 20, 20, 20));
+		
 		VBox hTitle = new VBox();
 		hTitle.getChildren().add(new Label("De Hero"));
-
 		hTitle.setStyle("-fx-background-color: #336699;");
+		
+		// configuracaoes do border
+		borderPane.setPadding(new Insets(20, 20, 20, 20));
 		borderPane.setLeft(hTitle);
-		borderPane.setCenter(criaHistoricoColorido());
+		borderPane.setCenter(historico);
+		
+		
 		Scene myScene = new Scene(borderPane, 500, 200);
 		primaryStage.setScene(myScene);
 		primaryStage.show();
