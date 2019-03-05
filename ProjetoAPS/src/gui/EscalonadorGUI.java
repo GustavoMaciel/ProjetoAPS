@@ -36,16 +36,24 @@ public class EscalonadorGUI extends Application {
 	/**
 	 * Cria a regua
 	 */
-	private static HBox criaRegua() {
+	private static VBox criaRegua() {
+		Rectangle transparent;
+		
+		HBox numeros = new HBox();
 		HBox regua = new HBox();
 		Separator s;
 		Label l;
 
 		for (int i = 0; i < 20; i++) {
-			l = new Label("" + (i));
-
+			l = new Label("" + ("|"));
+			
+			transparent = new Rectangle(20, 20);
+			transparent.setFill(Color.TRANSPARENT);
+			numeros.getChildren().add(transparent);
+			numeros.getChildren().add(new Label(""+i));
+			
 			if (i < 10) {
-				l = new Label("0" + (i));
+				//l = new Label("0" + (i));
 			}
 
 			s = new Separator();
@@ -58,7 +66,11 @@ public class EscalonadorGUI extends Application {
 			regua.getChildren().add(s);
 
 		}
-		return regua;
+		
+		VBox c = new VBox();
+		c.getChildren().add(numeros);
+		c.getChildren().add(regua);
+		return c;
 	}
 
 	/**
