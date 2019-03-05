@@ -6,6 +6,7 @@ import framework.Processo;
 import framework.TabelaResultante;
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.BorderPane;
@@ -56,6 +57,23 @@ public class EscalonadorGUI extends Application {
 		return regua;
 	}
 
+	/**
+	 * Cria uma coluna de processos de acordo com os processos que estao na fila
+	 * @return
+	 */
+	private static VBox criaColunaDeProcessos() {
+		VBox v = new VBox();
+		if (listaProcessos.size() == 0)
+			return v;
+
+		Button btnProcesso;
+		for (Processo p : listaProcessos) {
+			btnProcesso = new Button(p.getProcessoID());
+			v.getChildren().add(btnProcesso);
+		}
+		return v;
+	}
+	
 	/**
 	 * Metodo obrigatorio a ser chamado
 	 * */
