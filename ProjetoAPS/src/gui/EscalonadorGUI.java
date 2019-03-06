@@ -11,7 +11,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -33,6 +35,9 @@ public class EscalonadorGUI extends Application {
 	private final static String COLOR_EXECUTANTO = "#77C938";
 	private final static String COLOR_ESPERANDO = "#FFFF19";
 	private final static String COLOR_FINALIZADO = "#EC0C0C";
+	
+	private final static int WIDTH_WINDOWS = 1024; // largura 
+	private final static int HEIGHT_WINDOWS = 500; // altura
 	
 
 	/**
@@ -183,12 +188,46 @@ public class EscalonadorGUI extends Application {
 	}
 
 	
-	private static GridPane criaLegendaDeCores(){
+	private static VBox criaLegendaDeCores(){
+		VBox container = new VBox();
+		// cima, direita, baixo, esquerda
+		container.setPadding(new Insets(10, 0, 0, 0));
+//		String cssLayout = "-fx-border-color: red;\n" +
+//                "-fx-border-insets: 5;\n" +
+//                "-fx-border-width: 3;\n" +
+//                "-fx-border-style: dashed;\n";
+		
+		
+
+		container.getChildren().add(new Separator());
+		//container.getChildren().add(new Label("Legenda"));
+		
 		GridPane grid = new GridPane();
+		grid.setVgap(5);
+		grid.setHgap(2);
 		
-		//grid.add(new Rectangle(30,30, Color.), columnIndex, rowIndex);
+		Label legenda = new Label("*Legenda*"); 
+		legenda.setPadding(new Insets(10, 0, 5, 0));
+		grid.add(legenda, 2, 0);
 		
-		return grid;
+		// column, row
+		// Inexistente
+		grid.add(new Rectangle(30,30, Color.web(COLOR_NAO_EXISTE)), 0, 1);
+		grid.add(new Label("Inexistente"), 1, 1);
+		// Executando
+		grid.add(new Rectangle(30,30, Color.web(COLOR_EXECUTANTO)), 0, 2);
+		grid.add(new Label("Executando"), 1, 2);
+		// Esperando
+		grid.add(new Rectangle(30,30, Color.web(COLOR_ESPERANDO)), 3, 1);
+		grid.add(new Label("Esperando"), 4, 1);
+		// Finalizado
+		grid.add(new Rectangle(30,30, Color.web(COLOR_FINALIZADO)), 3, 2);
+		grid.add(new Label("Finalizado"), 4, 2);
+		
+		
+		//grid.setStyle(cssLayout);
+		container.getChildren().add(grid);
+		return container;
 	}
 	
 	/**
@@ -204,6 +243,7 @@ public class EscalonadorGUI extends Application {
 		inicializarComponentesGraficos();
 		VBox historico = criaHistoricoColorido();
 		VBox processos = criaColunaDeProcessos();
+		VBox legendaDeCores = criaLegendaDeCores();
 
 		// borderPane.setCenter(criaHistoricoColorido());
 
@@ -216,9 +256,10 @@ public class EscalonadorGUI extends Application {
 		borderPane.setPadding(new Insets(20, 20, 20, 20));
 		borderPane.setLeft(processos);
 		borderPane.setCenter(historico);
+		borderPane.setBottom(legendaDeCores);
 		
 		
-		Scene myScene = new Scene(borderPane, 500, 200);
+		Scene myScene = new Scene(borderPane, WIDTH_WINDOWS, HEIGHT_WINDOWS);
 		primaryStage.setScene(myScene);
 		primaryStage.show();
 
