@@ -202,7 +202,7 @@ public class EscalonadorGUI extends Application {
 
 		Label lbEscalonadores = new Label("Tipos de Escalonadores");
 		final ComboBox<String> escalonadoresComboBox = new ComboBox<String>();
-		escalonadoresComboBox.getItems().addAll("Roudi Robin");
+		escalonadoresComboBox.getItems().addAll("Round Robin");
 
 		// label e combobox
 		colunaEscalonador.getChildren().add(lbEscalonadores);
