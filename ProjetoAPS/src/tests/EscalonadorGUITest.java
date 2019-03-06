@@ -23,6 +23,15 @@ class EscalonadorGUITest {
 		Processo p2 = escalonador.addProcesso("P2", 0, 2);
 		Processo p3 = escalonador.addProcesso("P3", 0, 6);
 		Processo p4 = escalonador.addProcesso("P4", 3, 2);
+		escalonador.addProcesso("P5", 3, 2);
+		escalonador.addProcesso("P6", 3, 2);
+		escalonador.addProcesso("P7", 3, 2);
+		escalonador.addProcesso("P8", 3, 2);
+		escalonador.addProcesso("P9", 3, 2);
+		escalonador.addProcesso("P10", 3, 2);
+		escalonador.addProcesso("P11", 3, 2);
+		escalonador.addProcesso("P12", 3, 2);
+		escalonador.addProcesso("P13", 0, 2);
 
 		
 		ArrayList<Processo> fila = new ArrayList<Processo>();
@@ -33,17 +42,7 @@ class EscalonadorGUITest {
 		
 		System.out.println("fila" + fila.size());
 		TabelaResultante tabela = escalonador.rodar();
-		assertEquals(StatusProcesso.RUNNING, tabela.checarStatus("P1", 0));
-		assertEquals(StatusProcesso.RUNNING, tabela.checarStatus("P2", 2));
-		assertEquals(StatusProcesso.RUNNING, tabela.checarStatus("P3", 4));
-		assertEquals(StatusProcesso.RUNNING, tabela.checarStatus("P4", 7));
 		System.out.println("fila" + fila.size());
-		assertEquals("P1 RF\n", tabela.linhaProcesso(p1));
-
-		assertEquals("P1 RF\n" 
-				+ "P2 WRRF\n" 
-				+ "P3 WWWRRRWWRRRF\n" 
-				+ "P4 NNNWWWRRF\n", tabela.resultado());
 		
 		EscalonadorGUI gui = new EscalonadorGUI();
 		
