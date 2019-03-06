@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -27,6 +28,12 @@ public class EscalonadorGUI extends Application {
 	private static VBox areaHistorico;
 	private static BorderPane borderPane;
 	private static ArrayList<Processo> listaProcessos;
+	
+	private final static String COLOR_NAO_EXISTE = "#211919";
+	private final static String COLOR_EXECUTANTO = "#77C938";
+	private final static String COLOR_ESPERANDO = "#FFFF19";
+	private final static String COLOR_FINALIZADO = "#EC0C0C";
+	
 
 	/**
 	 * Inicializacao dos componentes
@@ -150,19 +157,19 @@ public class EscalonadorGUI extends Application {
 			container.setPadding(new Insets(0, 2, 0, 0));
 			
 			if (linhas[i] == StatusProcesso.NAOEXISTE.toString().charAt(0)) {// inexistente
-				rect.setFill(Color.web("#211919"));
+				rect.setFill(Color.web(COLOR_NAO_EXISTE));
 				HLinha.getChildren().add(container);
 
 			} else if (linhas[i] == StatusProcesso.RUNNING.toString().charAt(0)) { // running
-				rect.setFill(Color.web("#77C938"));
+				rect.setFill(Color.web(COLOR_EXECUTANTO));
 				HLinha.getChildren().add(container);
 
 			} else if (linhas[i] == StatusProcesso.WAITING.toString().charAt(0)) { // esperando
-				rect.setFill(Color.web("#FFFF19"));
+				rect.setFill(Color.web(COLOR_ESPERANDO));
 				HLinha.getChildren().add(container);
 
 			} else if (linhas[i] == StatusProcesso.FINISHED.toString().charAt(0)) { // finalizado
-				rect.setFill(Color.web("#EC0C0C"));
+				rect.setFill(Color.web(COLOR_FINALIZADO));
 				HLinha.getChildren().add(container);
 
 				// adicionar o anterior
@@ -175,6 +182,15 @@ public class EscalonadorGUI extends Application {
 		return areaHistorico;
 	}
 
+	
+	private static GridPane criaLegendaDeCores(){
+		GridPane grid = new GridPane();
+		
+		//grid.add(new Rectangle(30,30, Color.), columnIndex, rowIndex);
+		
+		return grid;
+	}
+	
 	/**
 	 * Metodo obrigatorio a ser chamado
 	 */
