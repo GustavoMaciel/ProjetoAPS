@@ -88,6 +88,12 @@ public class EscalonadorGUI extends Application {
 		return c;
 	}
 
+	
+	public static void setFilaProcessos(ArrayList<Processo> listaDeProcessos) {
+		listaProcessos = listaDeProcessos;
+	}
+	
+	
 	/**
 	 * Cria uma coluna de processos de acordo com os processos que estao na fila
 	 * 
@@ -95,13 +101,25 @@ public class EscalonadorGUI extends Application {
 	 */
 	private static VBox criaColunaDeProcessos() {
 		VBox v = new VBox();
-		if (listaProcessos.size() == 0)
+		v.setPadding(new Insets(29, 0, 0, 0));
+		HBox container;
+		
+		if (listaProcessos == null || listaProcessos.size() == 0)
 			return v;
 
-		Button btnProcesso;
+		System.out.println("entrei pocessos");
 		for (Processo p : listaProcessos) {
-			btnProcesso = new Button(p.getProcessoID());
-			v.getChildren().add(btnProcesso);
+			String str = new StringBuilder().append(p.getProcessoID())
+					.append("(").append(p.getTempoInicio()).append(",")
+					.append(p.getTempoExec()).append(")")
+					.toString();
+			
+			container = new HBox();
+			
+			// cima, direita, baixo, esquerda
+			container.setPadding(new Insets(1, 0, 0, 0));
+			container.getChildren().add(new Button(str));
+			v.getChildren().add(container);
 		}
 		return v;
 	}
@@ -122,7 +140,7 @@ public class EscalonadorGUI extends Application {
 
 		for (int i = 0; i < linhas.length; i++) {
 
-			rect = new Rectangle(20, 20);
+			rect = new Rectangle(20, 25);
 			HBox container = new HBox();
 			container.getChildren().add(rect);
 			
@@ -169,6 +187,7 @@ public class EscalonadorGUI extends Application {
 	public void start(Stage primaryStage) {
 		inicializarComponentesGraficos();
 		VBox historico = criaHistoricoColorido();
+		VBox processos = criaColunaDeProcessos();
 
 		// borderPane.setCenter(criaHistoricoColorido());
 
@@ -179,7 +198,7 @@ public class EscalonadorGUI extends Application {
 		
 		// configuracaoes do border
 		borderPane.setPadding(new Insets(20, 20, 20, 20));
-		borderPane.setLeft(hTitle);
+		borderPane.setLeft(processos);
 		borderPane.setCenter(historico);
 		
 		

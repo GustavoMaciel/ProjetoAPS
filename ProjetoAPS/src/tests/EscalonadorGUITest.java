@@ -3,6 +3,8 @@ package tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 
 import framework.EscalonadorRoundRobin;
@@ -22,12 +24,20 @@ class EscalonadorGUITest {
 		Processo p3 = escalonador.addProcesso("P3", 0, 6);
 		Processo p4 = escalonador.addProcesso("P4", 3, 2);
 
+		
+		ArrayList<Processo> fila = new ArrayList<Processo>();
+		for(Processo p : escalonador.getFila()) {
+			//(String processoID, int tempoInicio, int tempoExec)
+			fila.add(new Processo(p.getProcessoID(), p.getTempoInicio(), p.getTempoExec()));
+		}
+		
+		System.out.println("fila" + fila.size());
 		TabelaResultante tabela = escalonador.rodar();
 		assertEquals(StatusProcesso.RUNNING, tabela.checarStatus("P1", 0));
 		assertEquals(StatusProcesso.RUNNING, tabela.checarStatus("P2", 2));
 		assertEquals(StatusProcesso.RUNNING, tabela.checarStatus("P3", 4));
 		assertEquals(StatusProcesso.RUNNING, tabela.checarStatus("P4", 7));
-
+		System.out.println("fila" + fila.size());
 		assertEquals("P1 RF\n", tabela.linhaProcesso(p1));
 
 		assertEquals("P1 RF\n" 
@@ -37,7 +47,9 @@ class EscalonadorGUITest {
 		
 		EscalonadorGUI gui = new EscalonadorGUI();
 		
+		
 		gui.addResultado(tabela);
+		gui.setFilaProcessos(fila);
 		gui.run(null);
 		
 		
