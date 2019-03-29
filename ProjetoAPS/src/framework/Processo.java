@@ -40,7 +40,7 @@ public class Processo {
 	}
 
 	public String toString(){
-		return processoID " " + tempoExec + " "+tempoExec
+		return processoID +" " + tempoExec + " "+tempoExec;
 	}
 	
 
