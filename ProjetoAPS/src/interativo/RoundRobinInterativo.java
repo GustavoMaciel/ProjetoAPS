@@ -59,8 +59,8 @@ public class RoundRobinInterativo extends EscalonadorInterativo{
 			}else {
 				this.processoNaCPU.setStatus(StatusProcesso.WAITING);
 				this.fila.add(this.processoNaCPU);
-				this.tempoRodadoProcessoAtual = 1;
 				this.alterarProcessoNaCPU();
+				this.tempoRodadoProcessoAtual = 1;
 			}
 		}
 		this.tickAtual += 1;

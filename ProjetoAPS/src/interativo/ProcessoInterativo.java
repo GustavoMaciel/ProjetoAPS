@@ -36,5 +36,18 @@ public class ProcessoInterativo {
 		this.status = status;
 	}
 	
+	@Override
+	public boolean equals(Object received) {
+		ProcessoInterativo obj = (ProcessoInterativo) received;
+		if(this.getProcessoID().equals(obj.getProcessoID())) {
+			if(this.getStatus().equals(obj.getStatus())) {
+				if(this.getTempoChegada() == obj.getTempoChegada()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	
 }

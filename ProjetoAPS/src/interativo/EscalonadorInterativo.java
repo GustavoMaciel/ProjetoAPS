@@ -56,14 +56,17 @@ public class EscalonadorInterativo {
 		if(this.processoNaCPU != null) {
 			statusProcessos += this.processoNaCPU.getProcessoID() + " - " + this.processoNaCPU.getStatus().toString() + "\n";
 		}
-		if(this.fila.size() > 0 || this.filaIO.size() > 0) {
+		if(this.fila.size() > 0) {
 			for(ProcessoInterativo i: this.fila) {
 				statusProcessos += i.getProcessoID() + " - " + i.getStatus().toString() + "\n";
 			}
+		}
+		if(this.filaIO.size() > 0) {
 			for(ProcessoInterativo i: this.filaIO) {
 				statusProcessos += i.getProcessoID() + " - " + "BLOQUEADO\n";
 			}
-		}else {
+		}
+		if(statusProcessos.equals("")){
 			statusProcessos = "Nenhum Processo\n";
 		}
 		return statusProcessos;
@@ -102,6 +105,10 @@ public class EscalonadorInterativo {
 	
 	public void bloquearProcesso(String processoID) {
 		ProcessoInterativo processo = this.procurarProcesso(processoID, this.fila);
+		if(processo == null && this.processoNaCPU.getProcessoID().equals(processoID)) {
+			processo = this.processoNaCPU;
+			this.processoNaCPU = null;
+		}
 		if(processo != null) {
 			this.fila.remove(processo);
 			this.filaIO.add(processo);
