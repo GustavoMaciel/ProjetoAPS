@@ -26,34 +26,36 @@ public class RoundRobinInterativo extends EscalonadorInterativo{
 	}
 	
 	@Override
-	public String getStatusEscalonador() {
-		String status = this.getStatusProcessos() +
-				"Quantum: " + this.quantum + "\n" + 
-				"Tick: " + this.tickAtual;
-		return status;
+	public String getStatusMiddlePart() {
+		return "Quantum: " + this.getQuantum() + "\n";
 	}
 	
+	/**
+	 * Metodo utilizado para trocar o processo atual na CPU.
+	 * @return false se não houver nenhum processo na fila, true se a troca ocorreu.
+	 */
 	private boolean alterarProcessoNaCPU() {
 		try {
 			this.processoNaCPU = this.fila.remove(0);
 			this.processoNaCPU.setStatus(StatusProcesso.RUNNING);
+			this.tempoRodadoProcessoAtual = 0;
 		} catch (IndexOutOfBoundsException e) {
-			return true;
+			return false;
 		}
-		return false;
+		return true;
 	}
 	
 	@Override
 	public void tick() {
 		this.ordenarFila();
 		
-		boolean endTick = false;
+		boolean continuarTick = true;
 		// Ver se temos algum processo na CPU, dá pra usar essa parte aqui no caso de ser chamado o tick e ainda não ter nenhum processo
 		// Essa é a razão do boolean
 		if(this.processoNaCPU == null) {
-			endTick = this.alterarProcessoNaCPU();
+			continuarTick = this.alterarProcessoNaCPU();
 		}
-		if(!endTick) {
+		if(continuarTick) {
 			if(this.tempoRodadoProcessoAtual < this.quantum) {
 				this.tempoRodadoProcessoAtual += 1;
 			}else {

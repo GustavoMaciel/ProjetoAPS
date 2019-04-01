@@ -51,27 +51,6 @@ public class EscalonadorInterativo {
 		this.filaIO = filaIO;
 	}
 
-	public String getStatusProcessos() {
-		String statusProcessos = "";
-		if(this.processoNaCPU != null) {
-			statusProcessos += this.processoNaCPU.getProcessoID() + " - " + this.processoNaCPU.getStatus().toString() + "\n";
-		}
-		if(this.fila.size() > 0) {
-			for(ProcessoInterativo i: this.fila) {
-				statusProcessos += i.getProcessoID() + " - " + i.getStatus().toString() + "\n";
-			}
-		}
-		if(this.filaIO.size() > 0) {
-			for(ProcessoInterativo i: this.filaIO) {
-				statusProcessos += i.getProcessoID() + " - " + "BLOQUEADO\n";
-			}
-		}
-		if(statusProcessos.equals("")){
-			statusProcessos = "Nenhum Processo\n";
-		}
-		return statusProcessos;
-	}
-
 	public int getTickAtual() {
 		return tickAtual;
 	}
@@ -137,7 +116,36 @@ public class EscalonadorInterativo {
 	}
 	
 	public String getStatusEscalonador() {
-		//TODO ON CHILD
+		String status = "";
+		status += this.getStatusProcessos();
+		status += this.getStatusMiddlePart();
+		status += "Tick: " + this.getTickAtual();
+		return status;
+	}
+	
+	public String getStatusProcessos() {
+		String statusProcessos = "";
+		if(this.processoNaCPU != null) {
+			statusProcessos += this.processoNaCPU.getProcessoID() + " - " + this.processoNaCPU.getStatus().toString() + "\n";
+		}
+		if(this.fila.size() > 0) {
+			for(ProcessoInterativo i: this.fila) {
+				statusProcessos += i.getProcessoID() + " - " + i.getStatus().toString() + "\n";
+			}
+		}
+		if(this.filaIO.size() > 0) {
+			for(ProcessoInterativo i: this.filaIO) {
+				statusProcessos += i.getProcessoID() + " - " + "BLOQUEADO\n";
+			}
+		}
+		if(statusProcessos.equals("")){
+			statusProcessos = "Nenhum Processo\n";
+		}
+		return statusProcessos;
+	}
+
+	protected String getStatusMiddlePart() {
+		// TODO On Child
 		return null;
 	}
 
