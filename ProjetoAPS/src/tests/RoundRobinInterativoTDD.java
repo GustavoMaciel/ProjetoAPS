@@ -1,7 +1,11 @@
 package tests;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import exceptions.ProcessoInvalidoException;
 import interativo.*;
 
 class RoundRobinInterativoTDD {
@@ -349,7 +353,7 @@ class RoundRobinInterativoTDD {
 		assertEquals(""
 				+ "P2 - RUNNING\n"
 				+ "P3 - WAITING\n"
-				+ "P1 - WAITING", esca.getStatusProcessos());
+				+ "P1 - WAITING\n", esca.getStatusProcessos());
 	}
 	
 	// NÃO ENTENDI BEM O TESTE	
@@ -398,12 +402,12 @@ class RoundRobinInterativoTDD {
 	@Test
 	void criaEscalonadorComPrioridade() {
 		EscalonadorInterativo esca = new EscalonadorPrioridade();
-		esca.addProcesso("P1");
-		esca.tick();
-		
-		fail("Precisa lançar uma exeção informando que o processo precisa ser ");
-		
+		Assertions.assertThrows(ProcessoInvalidoException.class, () -> {
+			esca.addProcesso("P1");
+		});
 	}
+	
+	
 	
 	
 	

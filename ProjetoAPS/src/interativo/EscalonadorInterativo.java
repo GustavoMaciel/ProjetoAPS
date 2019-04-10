@@ -3,6 +3,8 @@ package interativo;
 import framework.StatusProcesso;
 import java.util.ArrayList;
 
+import exceptions.ProcessoInvalidoException;
+
 public class EscalonadorInterativo {
 
 	protected ArrayList<ProcessoInterativo> fila;
@@ -60,10 +62,12 @@ public class EscalonadorInterativo {
 	}
 	
 	public void addProcesso(String processoID, int prioridade) {
+		if(this instanceof RoundRobinInterativo) throw new ProcessoInvalidoException("Escalonador Round Robin só pode ter processos sem prioridade");
 		this.fila.add(this.criarProcesso(processoID, StatusProcesso.WAITING, prioridade));
 	}
 
 	public void addProcesso(String processoID) {
+		if(this instanceof EscalonadorPrioridade) throw new ProcessoInvalidoException("Escalonador de Prioridade só pode ter processos com prioridade");
 		StatusProcesso status = StatusProcesso.WAITING;
 		this.fila.add(this.criarProcesso(processoID, status));
 	}
@@ -104,6 +108,7 @@ public class EscalonadorInterativo {
 		}
 		if(processo != null) {
 			this.fila.remove(processo);
+			processo.setStatus(StatusProcesso.BLOCKED);
 			this.filaIO.add(processo);
 		}
 	}
@@ -112,6 +117,7 @@ public class EscalonadorInterativo {
 		ProcessoInterativo processo = this.procurarProcesso(processoID, this.filaIO);
 		if(processo != null) {
 			this.filaIO.remove(processo);
+			processo.setStatus(StatusProcesso.WAITING);
 			this.fila.add(processo);
 		}
 	}
