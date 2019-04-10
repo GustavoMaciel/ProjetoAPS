@@ -73,8 +73,7 @@ class RoundRobinInterativoTDD {
 
 	/**
 	 * T4
-	 * A partir do T3. Finalizar P1 e verificar se ele ainda executa mais um tick e finaliza
-	 * 
+	 * A partir do T3. Finalizar P1 e verificar se ele foi removido da CPU
 	 * */
 	@Test
 	void finalizarProcessoEVerificarSeAindaExecutaUmTick(){
@@ -82,22 +81,14 @@ class RoundRobinInterativoTDD {
 		esca.addProcesso("P1");
 		esca.tick();
 		
-//		esca.getFila().add(new ProcessoInterativo("P2", StatusProcesso.WAITING, 1));
-		
-//		System.out.println(esca.getFila());
-		
-		// assertEquals("P1 - RUNNING\nQuantum: 3\nTick: 1", esca.getStatusEscalonador());
+		assertEquals("P1 - RUNNING\nQuantum: 3\nTick: 1", esca.getStatusEscalonador());
 		
 		esca.finalizarProcesso("P1");
-		assertEquals("P1 - RUNNING\n"
-				+ "Quantum: 3\n"
-				+ "Tick: 1", esca.getStatusEscalonador());
-		esca.tick();
-		esca.tick();
-		esca.tick();
-		assertEquals("Nenhum Processo\n"
-				+ "Quantum: 3\n"
-				+ "Tick: 2", esca.getStatusProcessos());
-		}
-
+		assertEquals("Nenhum Processo\n", esca.getStatusProcessos());
+	}
+	
+	
+	
+	
+	
 }

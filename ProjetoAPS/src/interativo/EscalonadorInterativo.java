@@ -70,6 +70,12 @@ public class EscalonadorInterativo {
 	
 	public void finalizarProcesso(String processoID) {
 		ProcessoInterativo processo = procurarProcesso(processoID, this.fila);
+		
+		if(processo == null && this.processoNaCPU.getProcessoID().equals(processoID)) {
+			processo = this.processoNaCPU;
+			this.processoNaCPU = null;
+		}
+		
 		if(processo == null) {
 			processo = procurarProcesso(processoID, this.filaIO);
 		}
