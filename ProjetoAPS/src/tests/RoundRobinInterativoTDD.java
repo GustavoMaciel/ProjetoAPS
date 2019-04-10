@@ -196,8 +196,8 @@ class RoundRobinInterativoTDD {
 	
 	/**Concorrencia, processo finaliza quando tava executando
 	 * T8
-	 * Cria dois processos, ambos vão brigar cpu, mas P1 finaliza quando estava executando
-	 * Ou seja, quando ele finalizar, no próximo tick precisa deixar P2 executando
+	 * Cria dois processos, ambos vão brigar pela cpu, mas P1 finaliza quando estava executando
+	 * Ou seja, quando ele finalizar, no próximo tick precisa estar P2 executando
 	 * 
 	 * */
 	@Test
@@ -218,6 +218,32 @@ class RoundRobinInterativoTDD {
 		
 	}
 	
+	/**Concorrencia, processo finaliza quando tava esperando
+	 * T9
+	 * Cria dois processos, ambos brigam pela cpu, mas P1 finaliza quando estava esperando
+	 * Ou seja, quando ele finalizar, no próximo tick precisa estar P2 executando
+	 * Quando o quantum de P2 estourar ele precisa ainda continuar executando
+	 * 
+	 * */
+	@Test
+	void concorrenciaProcessoFinalizaQuandoEstavaEsperando() {
+		EscalonadorInterativo esca = new RoundRobinInterativo(2);
+		esca.addProcesso("P1");
+		esca.addProcesso("P2");
+		
+		rodaTickNVezes(esca, 3, false); // esca.tick(); esca.tick(); esca.tick();
+		
+		
+		esca.finalizarProcesso("P1");
+		
+		rodaTickNVezes(esca, 3, false); // esca.tick(); esca.tick(); esca.tick();
+		
+		assertEquals(""
+				+ "P2 - RUNNING\n"
+				+ "Quantum: 2\n"
+				+ "Tick: 6", esca.getStatusEscalonador());
+		
+	}
 	
 	
 	
