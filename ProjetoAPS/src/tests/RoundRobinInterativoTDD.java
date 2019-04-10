@@ -304,37 +304,6 @@ class RoundRobinInterativoTDD {
 	}
 	
 	/**
-	 * TInventado a partir do T12
-	 * A partir de T6, o processo executando bloqueia
-	 * Mas volta a fila de execução após P3 estourar o quantum
-	 * 
-	 * Status normal
-	 * P2 - RUNNING
-	 * P3 - WAITNG
-	 * P1 - BLOCKED
-	 * */
-	@Test
-	void processoExecutandoBloqueiaVoltaAFilaAposP3EstourarOQuantum() {
-		EscalonadorInterativo esca = new RoundRobinInterativo();
-		esca.addProcesso("P1");
-		esca.addProcesso("P2");
-		esca.addProcesso("P3");
-		
-		esca.tick();
-		esca.bloquearProcesso("P1");
-		esca.tick();
-		esca.tick();
-		
-		assertEquals(""
-				+ "P2 - RUNNING\n"
-				+ "P3 - WAITING\n"
-				+ "P1 - BLOCKED\n"
-				+ "Quantum: 3\n"
-				+ "Tick: 3"
-				+ "", esca.getStatusEscalonador());
-	}
-	
-	/**
 	 *  T13
 	 * A partir de T12, P1 é retornado quando P2 está executando
 	 * Status normal
