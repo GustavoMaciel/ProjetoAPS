@@ -159,16 +159,11 @@ class RoundRobinInterativoTDD {
 	 * 
 	 * P1 - WAITING
 	 * P8 - WAITING
-	 * P2 - WAITING
 	 * 
-	 * tick
-	 * tick
-	 * tick
-	 * 
-	 * P1 - RUNNING
+	 * P8 - RUNNING
+	 * P1 - WAITING
 	 * P2 - WAITING
-	 * tick: 3
-	 * quantum: 3
+	 * TICK: 5
 	 * 
 	 * */
 	@Test
