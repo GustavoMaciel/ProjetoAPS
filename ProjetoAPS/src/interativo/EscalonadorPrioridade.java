@@ -56,7 +56,6 @@ public class EscalonadorPrioridade extends RoundRobinInterativo{
 				return p1.getPrioridade() < p2.getPrioridade() ? -1 : (p1.getPrioridade() > p2.getPrioridade() ? +1 : 0);
 			}
 		});
-		Collections.reverse(this.fila);
 	}
 
 }
