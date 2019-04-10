@@ -245,17 +245,165 @@ class RoundRobinInterativoTDD {
 		
 	}
 	
+	/**Concorrencia, processo finaliza quando tava esperando
+	 * T10 => T5 com quantum default
+	 * Cria dois processos no tick 0 e chama o tick até estourar o quantum
+	 * */
+	@Test
+	void criaDoisProcessosEMandaEstourarOQuantumDefault() {
+		EscalonadorInterativo esca = new RoundRobinInterativo();
+		esca.addProcesso("P1");
+		esca.addProcesso("P2");
+		
+		rodaTickNVezes(esca, 4, false); // esca.tick(); esca.tick(); esca.tick();
+		assertEquals(""
+				+ "P2 - RUNNING\n"
+				+ "P1 - WAITING\n"
+				+ "Quantum: 3\n" // quantum default
+				+ "Tick: 4", esca.getStatusEscalonador());
+		
+	}
+	
+	/**
+	 * T11  - Não entendi
+	 * */
 	
 	
+	/**
+	 * T12
+	 * A partir de T6, o processo executando bloqueia
+	 * P2 - RUNNING
+	 * P3 - WAITNG
+	 * P1 - BLOCKED
+	 * 
+	 * Quando estoura apenas entre P2 e P3
+	 * 
+	 * */
+	@Test
+	void processoExecutandoBloqueiaFicandoApenasOutrosProcessosNaCPU() {
+		EscalonadorInterativo esca = new RoundRobinInterativo();
+		esca.addProcesso("P1");
+		esca.addProcesso("P2");
+		esca.addProcesso("P3");
+		
+		esca.tick();
+		esca.bloquearProcesso("P1");
+		esca.tick();
+		esca.tick();
+		
+		assertEquals(""
+				+ "P2 - RUNNING\n"
+				+ "P3 - WAITING\n"
+				+ "P1 - BLOCKED", esca.getStatusProcessos());
+	}
 	
+	/**
+	 * TInventado a partir do T12
+	 * A partir de T6, o processo executando bloqueia
+	 * Mas volta a fila de execução após P3 estourar o quantum
+	 * 
+	 * Status normal
+	 * P2 - RUNNING
+	 * P3 - WAITNG
+	 * P1 - BLOCKED
+	 * */
+	@Test
+	void processoExecutandoBloqueiaVoltaAFilaAposP3EstourarOQuantum() {
+		EscalonadorInterativo esca = new RoundRobinInterativo();
+		esca.addProcesso("P1");
+		esca.addProcesso("P2");
+		esca.addProcesso("P3");
+		
+		esca.tick();
+		esca.bloquearProcesso("P1");
+		esca.tick();
+		esca.tick();
+		
+		assertEquals(""
+				+ "P2 - RUNNING\n"
+				+ "P3 - WAITING\n"
+				+ "P1 - BLOCKED", esca.getStatusProcessos());
+	}
 	
+	/**
+	 *  T13
+	 * A partir de T12, P1 é retornado quando P2 está executando
+	 * Status normal
+	 * P2 - RUNNING
+	 * P3 - WAITING
+	 * P1 - WAITING
+	 * */
+	@Test
+	void p1RetornaQuandoP2EstaExecutando() {
+		EscalonadorInterativo esca = new RoundRobinInterativo();
+		esca.addProcesso("P1");
+		esca.addProcesso("P2");
+		esca.addProcesso("P3");
+		
+		esca.tick();
+		esca.bloquearProcesso("P1");
+		esca.tick();
+		esca.retomarProcesso("P1"); // ERRO Deveria voltar como WAITING
+//		esca.tick();
+		
+		assertEquals(""
+				+ "P2 - RUNNING\n"
+				+ "P3 - WAITING\n"
+				+ "P1 - WAITING", esca.getStatusProcessos());
+	}
 	
+	// NÃO ENTENDI BEM O TESTE	
+	/**
+	 * T14
+	 * P2 - BLOCKED
+	 * P3 - BLOCKED
+	 * P1 - BLOCKED
+	 * Retornam na ordem que pararam
+	 * */
+	@Test
+	void osProcessosBloqueamERetormaNaOrdemP1_P2_P3() {
+		EscalonadorInterativo esca = new RoundRobinInterativo();
+		esca.addProcesso("P1");
+		esca.addProcesso("P2");
+		esca.addProcesso("P3");
+		
+		esca.bloquearProcesso("P1");
+		esca.bloquearProcesso("P2");
+		esca.bloquearProcesso("P3");
+		
+		
+		assertEquals(""
+				+ "P1 - BLOCKED\n"
+				+ "P2 - BLOCKED\n"
+				+ "P3 - BLOCKED", esca.getStatusProcessos());
+		
+		esca.retomarProcesso("P1");
+		esca.retomarProcesso("P2");
+		esca.retomarProcesso("P3");
+		
+		assertEquals(""
+				+ "P1 - WAITING\n"
+				+ "P2 - WAITING\n"
+				+ "P3 - WAITING\n", esca.getStatusProcessos());
 	
+	}
 	
-	
-	
-	
-	
+	/**
+	 * T15
+	 * - Cria escalonador com prioridade
+	 * - Adiciona processo sem prioridade
+	 * - Verifica se exceção foi lançada indicando que tem que ser 
+	 * 	informado a prioridade
+	 * */
+	@Test
+	void criaEscalonadorComPrioridade() {
+		EscalonadorInterativo esca = new EscalonadorPrioridade();
+		esca.addProcesso("P1");
+		esca.tick();
+		
+		fail("Precisa lançar uma exeção informando que o processo precisa ser ");
+		
+	}
 	
 	
 	
