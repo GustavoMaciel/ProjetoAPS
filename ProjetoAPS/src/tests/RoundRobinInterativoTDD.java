@@ -298,7 +298,7 @@ class RoundRobinInterativoTDD {
 		assertEquals(""
 				+ "P2 - RUNNING\n"
 				+ "P3 - WAITING\n"
-				+ "P1 - BLOCKED", esca.getStatusProcessos());
+				+ "P1 - BLOCKED\n", esca.getStatusProcessos());
 	}
 	
 	/**
@@ -326,7 +326,7 @@ class RoundRobinInterativoTDD {
 		assertEquals(""
 				+ "P2 - RUNNING\n"
 				+ "P3 - WAITING\n"
-				+ "P1 - BLOCKED", esca.getStatusProcessos());
+				+ "P1 - BLOCKED\n", esca.getStatusProcessos());
 	}
 	
 	/**
@@ -379,7 +379,7 @@ class RoundRobinInterativoTDD {
 		assertEquals(""
 				+ "P1 - BLOCKED\n"
 				+ "P2 - BLOCKED\n"
-				+ "P3 - BLOCKED", esca.getStatusProcessos());
+				+ "P3 - BLOCKED\n", esca.getStatusProcessos());
 		
 		esca.retomarProcesso("P1");
 		esca.retomarProcesso("P2");
