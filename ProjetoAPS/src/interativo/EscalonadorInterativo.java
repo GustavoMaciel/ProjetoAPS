@@ -148,8 +148,15 @@ public class EscalonadorInterativo {
 			}
 		}
 		if(this.filaIO.size() > 0) {
+			int numProcess = 0;
 			for(ProcessoInterativo i: this.filaIO) {
-				statusProcessos += i.getProcessoID() + " - " + "BLOQUEADO\n";
+				numProcess++;
+				// ultimo processo nao pula linha
+				if(filaIO.size() == numProcess) {
+					statusProcessos += i.getProcessoID() + " - " + StatusProcesso.BLOCKED;
+				} else {
+					statusProcessos += i.getProcessoID() + " - " + StatusProcesso.BLOCKED +"\n";
+				}
 			}
 		}
 		if(statusProcessos.equals("")){

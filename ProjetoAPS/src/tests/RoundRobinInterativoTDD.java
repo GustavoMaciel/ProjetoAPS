@@ -264,8 +264,66 @@ class RoundRobinInterativoTDD {
 		
 	}
 	
+	/**
+	 * T11  - Não entendi
+	 * */
 	
 	
+	/**
+	 * T12
+	 * A partir de T6, o processo executando bloqueia
+	 * P2 - RUNNING
+	 * P3 - WAITNG
+	 * P1 - BLOCKED
+	 * 
+	 * Quando estoura apenas entre P2 e P3
+	 * 
+	 * */
+	@Test
+	void processoExecutandoBloqueiaFicandoApenasOutrosProcessosNaCPU() {
+		EscalonadorInterativo esca = new RoundRobinInterativo();
+		esca.addProcesso("P1");
+		esca.addProcesso("P2");
+		esca.addProcesso("P3");
+		
+		esca.tick();
+		esca.bloquearProcesso("P1");
+		esca.tick();
+		esca.tick();
+		
+		assertEquals(""
+				+ "P2 - RUNNING\n"
+				+ "P3 - WAITING\n"
+				+ "P1 - BLOCKED", esca.getStatusProcessos());
+	}
+	
+	/**
+	 * TInventado a partir do T12
+	 * A partir de T6, o processo executando bloqueia
+	 * Mas volta a fila de execução após P3 estourar o quantum
+	 * 
+	 * Status normal
+	 * P2 - RUNNING
+	 * P3 - WAITNG
+	 * P1 - BLOCKED
+	 * */
+	@Test
+	void processoExecutandoBloqueiaVoltaAFilaAposP3EstourarOQuantum() {
+		EscalonadorInterativo esca = new RoundRobinInterativo();
+		esca.addProcesso("P1");
+		esca.addProcesso("P2");
+		esca.addProcesso("P3");
+		
+		esca.tick();
+		esca.bloquearProcesso("P1");
+		esca.tick();
+		esca.tick();
+		
+		assertEquals(""
+				+ "P2 - RUNNING\n"
+				+ "P3 - WAITING\n"
+				+ "P1 - BLOCKED", esca.getStatusProcessos());
+	}
 	
 	
 	
