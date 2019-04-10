@@ -245,7 +245,24 @@ class RoundRobinInterativoTDD {
 		
 	}
 	
-	
+	/**Concorrencia, processo finaliza quando tava esperando
+	 * T10 => T5 com quantum default
+	 * Cria dois processos no tick 0 e chama o tick até estourar o quantum
+	 * */
+	@Test
+	void criaDoisProcessosEMandaEstourarOQuantumDefault() {
+		EscalonadorInterativo esca = new RoundRobinInterativo();
+		esca.addProcesso("P1");
+		esca.addProcesso("P2");
+		
+		rodaTickNVezes(esca, 4, false); // esca.tick(); esca.tick(); esca.tick();
+		assertEquals(""
+				+ "P2 - RUNNING\n"
+				+ "P1 - WAITING\n"
+				+ "Quantum: 3\n" // quantum default
+				+ "Tick: 4", esca.getStatusEscalonador());
+		
+	}
 	
 	
 	
