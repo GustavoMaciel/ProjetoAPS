@@ -325,11 +325,59 @@ class RoundRobinInterativoTDD {
 				+ "P1 - BLOCKED", esca.getStatusProcessos());
 	}
 	
+	/**
+	 *  T13
+	 * A partir de T12, P1 é retornado quando P2 está executando
+	 * Status normal
+	 * P2 - RUNNING
+	 * P3 - WAITING
+	 * P1 - WAITING
+	 * */
+	@Test
+	void p1RetornaQuandoP2EstaExecutando() {
+		EscalonadorInterativo esca = new RoundRobinInterativo();
+		esca.addProcesso("P1");
+		esca.addProcesso("P2");
+		esca.addProcesso("P3");
+		
+		esca.tick();
+		esca.bloquearProcesso("P1");
+		esca.tick();
+		esca.retomarProcesso("P1"); // ERRO Deveria voltar como WAITING
+//		esca.tick();
+		
+		assertEquals(""
+				+ "P2 - RUNNING\n"
+				+ "P3 - WAITING\n"
+				+ "P1 - WAITING", esca.getStatusProcessos());
+	}
 	
-	
-	
-	
-	
+	/**
+	 *  T14
+	 * A partir de T12, P1 é retornado quando P2 está executando
+	 * Status normal
+	 * P2 - RUNNING
+	 * P3 - WAITING
+	 * P1 - WAITING
+	 * */
+	@Test
+	void osProcessosBloqueamERetormaNaOrdemP2_P1_P3() {
+		EscalonadorInterativo esca = new RoundRobinInterativo();
+		esca.addProcesso("P1");
+		esca.addProcesso("P2");
+		esca.addProcesso("P3");
+		
+		esca.tick();
+		esca.bloquearProcesso("P1");
+		esca.tick();
+		esca.retomarProcesso("P1"); // ERRO Deveria voltar como WAITING
+//		esca.tick();
+		
+		assertEquals(""
+				+ "P2 - RUNNING\n"
+				+ "P3 - WAITING\n"
+				+ "P1 - WAITING", esca.getStatusProcessos());
+	}
 	
 	
 	
