@@ -8,7 +8,7 @@ public class ProcessoInterativo {
 	private int prioridade;
 	
 	public ProcessoInterativo() throws Exception{
-		throw new Exception("Usa a API direito miz閞a");
+		throw new Exception("Usa a API direito jovem desenvolvedor(a)");
 	}
 	
 	public ProcessoInterativo(String processoID, StatusProcesso status, int tempoChegada) {
