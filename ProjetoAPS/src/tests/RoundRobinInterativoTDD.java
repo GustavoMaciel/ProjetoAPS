@@ -100,7 +100,7 @@ class RoundRobinInterativoTDD {
 	 * 
 	 * P1 - RUNNING
 	 * P2 - WAITING
-	 * tick :4
+	 * tick: 3
 	 * quantum: 3
 	 * */
 	@Test
@@ -118,7 +118,37 @@ class RoundRobinInterativoTDD {
 		
 		assertEquals("P1 - RUNNING\nP2 - WAITING\nQuantum: 3\nTick: 3", esca.getStatusEscalonador());
 		
+	}
+	
+	
+	/**
+	 * T6
+	 * Repetir o T5 com 3 processos
+	 * */
+	@Test
+	void cria3ProcessosEmTick0EChamarTickAteEstourarOQauntum(){
+		EscalonadorInterativo esca = new RoundRobinInterativo(3);
+		esca.addProcesso("P1");
+		esca.addProcesso("P2");
+		esca.addProcesso("P8");
 		
+		esca.tick();
+		assertEquals(""
+				+ "P1 - RUNNING\n"
+				+ "P2 - WAITING\n"
+				+ "P8 - WAITING\n"
+				+ "Quantum: 3"
+				+ "\nTick: 1", esca.getStatusEscalonador());
+		
+		esca.tick();
+		esca.tick();
+		
+		assertEquals(""
+				+ "P1 - RUNNING\n"
+				+ "P2 - WAITING\n"
+				+ "P8 - WAITING\n"
+				+ "Quantum: 3\n"
+				+ "Tick: 3", esca.getStatusEscalonador());
 	}
 	
 	
