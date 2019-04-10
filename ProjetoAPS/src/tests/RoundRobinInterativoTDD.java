@@ -152,5 +152,81 @@ class RoundRobinInterativoTDD {
 	}
 	
 	
+	/**
+	 * P7
+	 * Parecido com T5, P2 entra no tick 3
+	 * mas a concorrência só começa em TICK 3
+	 * 
+	 * P1 - WAITING
+	 * P8 - WAITING
+	 * P2 - WAITING
+	 * 
+	 * tick
+	 * tick
+	 * tick
+	 * 
+	 * P1 - RUNNING
+	 * P2 - WAITING
+	 * tick: 3
+	 * quantum: 3
+	 * 
+	 * */
+	@Test
+	void cria3ProcessosMasP2SoEhCriadoNoTick3(){
+		EscalonadorInterativo esca = new RoundRobinInterativo(3);
+		esca.addProcesso("P1");
+		esca.addProcesso("P8");
+		
+		esca.tick();
+		esca.tick();
+		assertEquals(""
+				+ "P1 - RUNNING\n"
+				+ "P8 - WAITING\n"
+				+ "Quantum: 3"
+				+ "\nTick: 2", esca.getStatusEscalonador());
+		
+		esca.tick();
+		esca.addProcesso("P2");
+		
+		esca.tick();
+		esca.tick();
+		
+		assertEquals(""
+				+ "P8 - RUNNING\n"
+				+ "P1 - WAITING\n"
+				+ "P2 - WAITING\n"
+				+ "Quantum: 3\n"
+				+ "Tick: 5", esca.getStatusEscalonador());
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }
