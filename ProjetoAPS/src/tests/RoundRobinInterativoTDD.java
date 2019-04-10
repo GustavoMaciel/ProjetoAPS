@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import interativo.*;
 
 class RoundRobinInterativoTDD {
-	// Metodos e Cenários
+	// Metodos e Cenï¿½rios
 	public void rodaTickNVezes(EscalonadorInterativo esca, int n, boolean printForDebug) {
 		for (int i = 0; i < n; i++) {
 			esca.tick();
@@ -55,5 +55,49 @@ class RoundRobinInterativoTDD {
 		rodaTickNVezes(esca, 3, false);
 		assertEquals("P2 - RUNNING\nP1 - WAITING\nQuantum: 3\nTick: 4", esca.getStatusEscalonador());
 	}
+	
+	/**
+	 * T3
+	 * Adiciona um processo (p1) no tick 0
+	 * Chamar tick para ver se P1 continua Executanto
+	 * 
+	 * */
+	@Test
+	void adicionaP1NoTick0EVerificaSeEleContinuaExecutanto() {
+		EscalonadorInterativo esca = new RoundRobinInterativo(3);
+		esca.addProcesso("P1");
+		esca.tick();
+		
+		assertEquals("P1 - RUNNING\nQuantum: 3\nTick: 1", esca.getStatusEscalonador());
+	}
+
+	/**
+	 * T4
+	 * A partir do T3. Finalizar P1 e verificar se ele ainda executa mais um tick e finaliza
+	 * 
+	 * */
+	@Test
+	void finalizarProcessoEVerificarSeAindaExecutaUmTick(){
+		EscalonadorInterativo esca = new RoundRobinInterativo(3);
+		esca.addProcesso("P1");
+		esca.tick();
+		
+//		esca.getFila().add(new ProcessoInterativo("P2", StatusProcesso.WAITING, 1));
+		
+//		System.out.println(esca.getFila());
+		
+		// assertEquals("P1 - RUNNING\nQuantum: 3\nTick: 1", esca.getStatusEscalonador());
+		
+		esca.finalizarProcesso("P1");
+		assertEquals("P1 - RUNNING\n"
+				+ "Quantum: 3\n"
+				+ "Tick: 1", esca.getStatusEscalonador());
+		esca.tick();
+		esca.tick();
+		esca.tick();
+		assertEquals("Nenhum Processo\n"
+				+ "Quantum: 3\n"
+				+ "Tick: 2", esca.getStatusProcessos());
+		}
 
 }
