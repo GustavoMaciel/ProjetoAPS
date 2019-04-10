@@ -62,6 +62,7 @@ public class EscalonadorInterativo {
 	}
 	
 	public void addProcesso(String processoID, int prioridade) {
+		if(this instanceof RoundRobinInterativo) throw new ProcessoInvalidoException("Escalonador Round Robin só pode ter processos sem prioridade");
 		this.fila.add(this.criarProcesso(processoID, StatusProcesso.WAITING, prioridade));
 	}
 
