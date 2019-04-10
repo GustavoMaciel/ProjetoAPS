@@ -388,7 +388,22 @@ class RoundRobinInterativoTDD {
 	
 	}
 	
-	
+	/**
+	 * T15
+	 * - Cria escalonador com prioridade
+	 * - Adiciona processo sem prioridade
+	 * - Verifica se exeção foi lançada indicando que tem que ser 
+	 * 	informado a prioridade
+	 * */
+	@Test
+	void criaEscalonadorComPrioridade() {
+		EscalonadorInterativo esca = new EscalonadorPrioridade();
+		esca.addProcesso("P1");
+		esca.tick();
+		
+		fail("Precisa lançar uma exeção informando que o processo precisa ser ");
+		
+	}
 	
 	
 	
