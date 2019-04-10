@@ -157,7 +157,7 @@ public class EscalonadorInterativo {
 		}
 		if(this.filaIO.size() > 0) {
 			for(ProcessoInterativo i: this.filaIO) {
-				statusProcessos += i.getProcessoID() + " - " + StatusProcesso.BLOCKED;
+				statusProcessos += i.getProcessoID() + " - " + StatusProcesso.BLOCKED + "\n";
 				
 			}
 		}
