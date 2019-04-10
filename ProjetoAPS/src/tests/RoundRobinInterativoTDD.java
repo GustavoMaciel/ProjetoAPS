@@ -87,7 +87,39 @@ class RoundRobinInterativoTDD {
 		assertEquals("Nenhum Processo\n", esca.getStatusProcessos());
 	}
 	
-	
+	/**
+	 * T5
+	 * Cria dois processos no tick 0 e chama o tick até estourar o quantum
+	 * 
+	 * P1 - WAITING
+	 * P2 - WAITING
+	 * 
+	 * tick
+	 * tick
+	 * tick
+	 * 
+	 * P1 - RUNNING
+	 * P2 - WAITING
+	 * tick :4
+	 * quantum: 3
+	 * */
+	@Test
+	void cria2ProcessosEmTick0EChamarTickAteEstourarOQauntum(){
+		EscalonadorInterativo esca = new RoundRobinInterativo(3);
+		esca.addProcesso("P1");
+		esca.addProcesso("P2");
+		
+		esca.tick();
+		assertEquals("P1 - RUNNING\nP2 - WAITING\nQuantum: 3\nTick: 1", esca.getStatusEscalonador());
+		
+		
+		esca.tick();
+		esca.tick();
+		
+		assertEquals("P1 - RUNNING\nP2 - WAITING\nQuantum: 3\nTick: 3", esca.getStatusEscalonador());
+		
+		
+	}
 	
 	
 	
