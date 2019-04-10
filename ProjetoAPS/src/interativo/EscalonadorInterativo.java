@@ -67,7 +67,7 @@ public class EscalonadorInterativo {
 	}
 
 	public void addProcesso(String processoID) {
-		if(this instanceof EscalonadorPrioridade) throw new ProcessoInvalidoException("Escalonador de Prioridade só pode ter processos com prioridade");
+		if(this instanceof EscalonadorPrioridade) throw new ProcessoInvalidoException("Escalonador de Prioridade sï¿½ pode ter processos com prioridade");
 		StatusProcesso status = StatusProcesso.WAITING;
 		this.fila.add(this.criarProcesso(processoID, status));
 	}
@@ -155,7 +155,7 @@ public class EscalonadorInterativo {
 		}
 		if(this.filaIO.size() > 0) {
 			for(ProcessoInterativo i: this.filaIO) {
-				statusProcessos += i.getProcessoID() + " - " + StatusProcesso.BLOCKED;
+				statusProcessos += i.getProcessoID() + " - " + StatusProcesso.BLOCKED + "\n";
 				
 			}
 		}
