@@ -58,6 +58,10 @@ public class EscalonadorInterativo {
 	public void setTickAtual(int tickAtual) {
 		this.tickAtual = tickAtual;
 	}
+	
+	public void addProcesso(String processoID, int prioridade) {
+		this.fila.add(this.criarProcesso(processoID, StatusProcesso.WAITING, prioridade));
+	}
 
 	public void addProcesso(String processoID) {
 		StatusProcesso status = StatusProcesso.WAITING;
@@ -77,6 +81,10 @@ public class EscalonadorInterativo {
 			}
 		}
 	}
+	
+	private ProcessoInterativo criarProcesso(String processoID, StatusProcesso status, int prioridade) {
+		return new ProcessoInterativo(processoID, status, this.tickAtual, prioridade);
+	} 
 
 	private ProcessoInterativo criarProcesso(String processoID, StatusProcesso status) {
 		return new ProcessoInterativo(processoID, status, this.tickAtual);

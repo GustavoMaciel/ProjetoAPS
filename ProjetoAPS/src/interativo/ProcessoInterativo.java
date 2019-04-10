@@ -5,11 +5,28 @@ public class ProcessoInterativo {
 	private String processoID;
 	private StatusProcesso status;
 	private int tempoChegada;
+	private int prioridade;
+	
+	public ProcessoInterativo() throws Exception{
+		throw new Exception("Usa a API direito miz閞a");
+	}
 	
 	public ProcessoInterativo(String processoID, StatusProcesso status, int tempoChegada) {
 		this.processoID = processoID;
 		this.status = status;
 		this.tempoChegada = tempoChegada;
+	}
+	public ProcessoInterativo(String processoID, StatusProcesso status, int tempoChegada, int prioridade) {
+		this(processoID, status, tempoChegada);
+		this.prioridade = prioridade;
+	}
+
+	public int getPrioridade() {
+		return prioridade;
+	}
+
+	public void setPrioridade(int prioridade) {
+		this.prioridade = prioridade;
 	}
 
 	public int getTempoChegada() {
