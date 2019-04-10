@@ -392,7 +392,7 @@ class RoundRobinInterativoTDD {
 	 * T15
 	 * - Cria escalonador com prioridade
 	 * - Adiciona processo sem prioridade
-	 * - Verifica se exeção foi lançada indicando que tem que ser 
+	 * - Verifica se exceção foi lançada indicando que tem que ser 
 	 * 	informado a prioridade
 	 * */
 	@Test
