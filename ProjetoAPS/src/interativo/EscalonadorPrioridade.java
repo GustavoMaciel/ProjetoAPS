@@ -3,8 +3,6 @@ package interativo;
 import java.util.Collections;
 import java.util.Comparator;
 
-import framework.StatusProcesso;
-
 public class EscalonadorPrioridade extends RoundRobinInterativo {
 
 	public EscalonadorPrioridade() {
@@ -14,42 +12,31 @@ public class EscalonadorPrioridade extends RoundRobinInterativo {
 	public EscalonadorPrioridade(int quantum) {
 		super(quantum);
 	}
-
+	
 	@Override
-	public void tick() {
-		boolean continuarTick = true;
-		this.ordenarFila();
-		if (this.processoNaCPU == null) {
-			continuarTick = this.alterarProcessoNaCPU();
+	protected void tickTemplateProcesso() {
+		try {
+			if(this.fila.get(0).getPrioridade() < this.processoNaCPU.getPrioridade()) {
+				trocaDeProcesso();
+			}
+		}catch(IndexOutOfBoundsException e) {
+			// Esperado se não houver processos na fila, não precisa fazer nada
 		}
+		if (this.tempoRodadoProcessoAtual < this.getQuantum()) {
+			this.tempoRodadoProcessoAtual += 1;
+		} else {
+			this.ordenarFila();
 
-		if (continuarTick) {
-			if (this.tempoRodadoProcessoAtual < this.getQuantum()) {
-				this.tempoRodadoProcessoAtual += 1;
-			} else {
-				this.ordenarFila();
-
-				// Eu tenho em minha fila um processo que tenha a mesma prioridade que o proceso
-				// atual na CPU?
-				// Porque se eu tenho, quer dizer que eu devo trocar
-				// Se nÃ£o tenho, nÃ£o devo trocar de processo
-				// Por algum motivo se eu colocar o this.tempoRodadoProcessoAtual = 1; antes do
-				// if else dÃ¡ erro, vai entender
-				try {
-					if (this.fila.get(0).getPrioridade() == this.processoNaCPU.getPrioridade()) {
-						this.processoNaCPU.setStatus(StatusProcesso.WAITING);
-						this.fila.add(this.processoNaCPU);
-						this.alterarProcessoNaCPU();
-						this.tempoRodadoProcessoAtual = 1;
-					} else {
-						this.tempoRodadoProcessoAtual = 1;
-					}
-				} catch (IndexOutOfBoundsException e) {
+			try {
+				if (this.fila.get(0).getPrioridade() <= this.processoNaCPU.getPrioridade()) {
+					trocaDeProcesso();
+				} else {
 					this.tempoRodadoProcessoAtual = 1;
 				}
+			} catch (IndexOutOfBoundsException e) {
+				this.tempoRodadoProcessoAtual = 1;
 			}
 		}
-		this.tickAtual += 1;
 	}
 
 	@Override

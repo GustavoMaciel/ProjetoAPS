@@ -2,7 +2,6 @@ package interativo;
 
 import java.util.Collections;
 import java.util.Comparator;
-import framework.StatusProcesso;
 
 public class RoundRobinInterativo extends EscalonadorInterativo{
 	private int quantum;
@@ -30,43 +29,13 @@ public class RoundRobinInterativo extends EscalonadorInterativo{
 		return "Quantum: " + this.getQuantum() + "\n";
 	}
 	
-	/**
-	 * Metodo utilizado para trocar o processo atual na CPU.
-	 * @return false se n�o houver nenhum processo na fila, true se a troca ocorreu.
-	 */
-	protected boolean alterarProcessoNaCPU() {
-		try {
-			this.processoNaCPU = this.fila.remove(0);
-			this.processoNaCPU.setStatus(StatusProcesso.RUNNING);
-			this.tempoRodadoProcessoAtual = 0;
-		} catch (IndexOutOfBoundsException e) {
-			return false;
-		}
-		return true;
-	}
-	
 	@Override
-	public void tick() {
-		this.ordenarFila();
-		
-		boolean continuarTick = true;
-		// Ver se temos algum processo na CPU, d� pra usar essa parte aqui no caso de ser chamado o tick e ainda n�o ter nenhum processo
-		// Essa � a raz�o do boolean
-		if(this.processoNaCPU == null) {
-			continuarTick = this.alterarProcessoNaCPU();
+	protected void tickTemplateProcesso() {
+		if(this.tempoRodadoProcessoAtual < this.quantum) {
+			this.tempoRodadoProcessoAtual += 1;
+		}else {
+			trocaDeProcesso();
 		}
-
-		if(continuarTick) {
-			if(this.tempoRodadoProcessoAtual < this.quantum) {
-				this.tempoRodadoProcessoAtual += 1;
-			}else {
-				this.processoNaCPU.setStatus(StatusProcesso.WAITING);
-				this.fila.add(this.processoNaCPU);
-				this.alterarProcessoNaCPU();
-				this.tempoRodadoProcessoAtual = 1;
-			}
-		}
-		this.tickAtual += 1;
 	}
 	
 	@Override

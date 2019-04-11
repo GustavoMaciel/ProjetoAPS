@@ -133,7 +133,46 @@ public class EscalonadorInterativo {
 		return null;
 	}
 	
+	//Refactoring
+	protected void trocaDeProcesso() {
+		this.processoNaCPU.setStatus(StatusProcesso.WAITING);
+		this.fila.add(this.processoNaCPU);
+		this.alterarProcessoNaCPU();
+		this.tempoRodadoProcessoAtual = 1;
+	}
+	
+	/**
+	 * Metodo utilizado para trocar o processo atual na CPU.
+	 * @return false se n�o houver nenhum processo na fila, true se a troca ocorreu.
+	 */
+	protected boolean alterarProcessoNaCPU() {
+		try {
+			this.processoNaCPU = this.fila.remove(0);
+			this.processoNaCPU.setStatus(StatusProcesso.RUNNING);
+			this.tempoRodadoProcessoAtual = 0;
+		} catch (IndexOutOfBoundsException e) {
+			return false;
+		}
+		return true;
+	}
+	
 	public void tick() {
+		boolean continuarTick = true;
+		ordenarFila();
+		
+		// Ver se temos algum processo na CPU, d� pra usar essa parte aqui no caso de ser chamado o tick e ainda n�o ter nenhum processo
+		// Essa � a raz�o do boolean
+		if(this.processoNaCPU == null) {
+			continuarTick = this.alterarProcessoNaCPU();
+		}
+		
+		if(continuarTick) {
+			tickTemplateProcesso();
+		}
+		this.tickAtual++;
+	}
+	
+	protected void tickTemplateProcesso() {
 		//TODO ON CHILD
 	}
 	
