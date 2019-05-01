@@ -9,7 +9,10 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
@@ -22,6 +25,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 public class EscalonadorGUI extends Application {
 	private static int TEMPO_EXECUCAO = 30;
@@ -287,6 +291,22 @@ public class EscalonadorGUI extends Application {
 		primaryStage.setScene(myScene);
 		primaryStage.show();
 
+	}
+	
+	private static Button addProcesso() {
+		Dialog<Pair<String, String>> dialog = new Dialog<>();
+		dialog.setTitle("Adicionar novo processo");
+		
+		// set the button types
+		ButtonType loginButtonType = new ButtonType("Adicionar", ButtonData.OK_DONE);
+		dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+		
+		
+		
+		
+		
+		
+		return null;
 	}
 
 	public void run(String[] args) {
