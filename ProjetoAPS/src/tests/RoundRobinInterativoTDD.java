@@ -282,8 +282,28 @@ class RoundRobinInterativoTDD {
 	}
 	
 	/**
-	 * T11  - Não entendi
+	 * T11  - Dois processos com intervalo no meio
 	 * */
+	@Test
+	public void doisProcessosComIntervaloNoMeio() {
+		EscalonadorInterativo esca = new RoundRobinInterativo(3);
+		esca.addProcesso("P1");
+		esca.addProcesso("P2");
+		
+		esca.bloquearProcesso("P2");
+		esca.finalizarProcesso("P1");
+		esca.tick();
+		esca.tick();
+		esca.retomarProcesso("P2");
+		esca.tick();
+		
+		assertEquals(""
+				+ "P2 - RUNNING\n"
+				+ "Quantum: 3\n" // quantum default
+				+ "Tick: 3", esca.getStatusEscalonador());
+		
+	}
+	
 	
 	
 	/**
