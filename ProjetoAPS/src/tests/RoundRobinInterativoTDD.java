@@ -352,11 +352,19 @@ class RoundRobinInterativoTDD {
 	 * P2 - BLOCKED
 	 * P3 - BLOCKED
 	 * P1 - BLOCKED
-	 * Retornam na ordem que pararam
+	 * Retornam na nesta ordem
+	 * P2
+	 * P1
+	 * P3
+	 * 
+	 * Ficando
+	 * P2 - RUNNING
+	 * P1 - WAITING
+	 * P3 - WAITING
 	 * */
 	@Test
 	void osProcessosBloqueamERetormaNaOrdemP1_P2_P3() {
-		EscalonadorInterativo esca = new RoundRobinInterativo();
+		EscalonadorInterativo esca = new RoundRobinInterativo(3);
 		esca.addProcesso("P1");
 		esca.addProcesso("P2");
 		esca.addProcesso("P3");
@@ -373,13 +381,15 @@ class RoundRobinInterativoTDD {
 				+ "Quantum: 3\n"
 				+ "Tick: 0", esca.getStatusEscalonador());
 		
-		esca.retomarProcesso("P1");
 		esca.retomarProcesso("P2");
+		esca.retomarProcesso("P1");
 		esca.retomarProcesso("P3");
 		
+		esca.tick();
+		
 		assertEquals(""
+				+ "P2 - RUNNING\n"
 				+ "P1 - WAITING\n"
-				+ "P2 - WAITING\n"
 				+ "P3 - WAITING\n", esca.getStatusProcessos());
 	
 	}
