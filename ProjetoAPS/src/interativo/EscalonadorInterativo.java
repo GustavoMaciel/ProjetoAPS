@@ -62,12 +62,14 @@ public class EscalonadorInterativo {
 	}
 	
 	public void addProcesso(String processoID, int prioridade) {
-		if(!(this instanceof EscalonadorPrioridade)) throw new ProcessoInvalidoException("Somente EscalonadorPrioridade pode criar processo com prioridade");
+		if(!(this instanceof EscalonadorPrioridade)) 
+			throw new ProcessoInvalidoException("Somente EscalonadorPrioridade pode criar processo com prioridade");
 		this.fila.add(this.criarProcesso(processoID, StatusProcesso.WAITING, prioridade));
 	}
 
 	public void addProcesso(String processoID) {
-		if(this instanceof EscalonadorPrioridade) throw new ProcessoInvalidoException("Escalonador de Prioridade sï¿½ pode ter processos com prioridade");
+		if(this instanceof EscalonadorPrioridade) 
+			throw new ProcessoInvalidoException("Escalonador de Prioridade só pode ter processos com prioridade");
 		StatusProcesso status = StatusProcesso.WAITING;
 		this.fila.add(this.criarProcesso(processoID, status));
 	}
@@ -131,7 +133,46 @@ public class EscalonadorInterativo {
 		return null;
 	}
 	
+	//Refactoring
+	protected void trocaDeProcesso() {
+		this.processoNaCPU.setStatus(StatusProcesso.WAITING);
+		this.fila.add(this.processoNaCPU);
+		this.alterarProcessoNaCPU();
+		this.tempoRodadoProcessoAtual = 1;
+	}
+	
+	/**
+	 * Metodo utilizado para trocar o processo atual na CPU.
+	 * @return false se nï¿½o houver nenhum processo na fila, true se a troca ocorreu.
+	 */
+	protected boolean alterarProcessoNaCPU() {
+		try {
+			this.processoNaCPU = this.fila.remove(0);
+			this.processoNaCPU.setStatus(StatusProcesso.RUNNING);
+			this.tempoRodadoProcessoAtual = 0;
+		} catch (IndexOutOfBoundsException e) {
+			return false;
+		}
+		return true;
+	}
+	
 	public void tick() {
+		boolean continuarTick = true;
+		ordenarFila();
+		
+		// Ver se temos algum processo na CPU, dï¿½ pra usar essa parte aqui no caso de ser chamado o tick e ainda nï¿½o ter nenhum processo
+		// Essa ï¿½ a razï¿½o do boolean
+		if(this.processoNaCPU == null) {
+			continuarTick = this.alterarProcessoNaCPU();
+		}
+		
+		if(continuarTick) {
+			tickTemplateProcesso();
+		}
+		this.tickAtual++;
+	}
+	
+	protected void tickTemplateProcesso() {
 		//TODO ON CHILD
 	}
 	

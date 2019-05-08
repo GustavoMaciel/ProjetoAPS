@@ -3,57 +3,50 @@ package interativo;
 import java.util.Collections;
 import java.util.Comparator;
 
+public class EscalonadorPrioridade extends RoundRobinInterativo {
 
-import framework.StatusProcesso;
-
-public class EscalonadorPrioridade extends RoundRobinInterativo{
-	
 	public EscalonadorPrioridade() {
 		super();
 	}
-	
+
 	public EscalonadorPrioridade(int quantum) {
 		super(quantum);
 	}
 	
 	@Override
-	public void tick() {
-		boolean continuarTick = true;
-		this.ordenarFila();
-		if(this.processoNaCPU == null) {
-			continuarTick = this.alterarProcessoNaCPU();
+	protected void tickTemplateProcesso() {
+		try {
+			if(this.fila.get(0).getPrioridade() < this.processoNaCPU.getPrioridade()) {
+				trocaDeProcesso();
+			}
+		}catch(IndexOutOfBoundsException e) {
+			// Esperado se não houver processos na fila, não precisa fazer nada
 		}
-		
-		if(continuarTick) {
-			if(this.tempoRodadoProcessoAtual < this.getQuantum()) {
-				this.tempoRodadoProcessoAtual += 1;
-			}else {
-				this.ordenarFila();
-				
-				//Eu tenho em minha fila um processo que tenha a mesma prioridade que o proceso atual na CPU?
-				//Porque se eu tenho, quer dizer que eu devo trocar
-				//Se nÃ£o tenho, nÃ£o devo trocar de processo
-				//Por algum motivo se eu colocar o this.tempoRodadoProcessoAtual = 1; antes do if else dÃ¡ erro, vai entender
-				if(this.fila.get(0).getPrioridade() == this.processoNaCPU.getPrioridade()) {
-					this.processoNaCPU.setStatus(StatusProcesso.WAITING);
-					this.fila.add(this.processoNaCPU);
-					this.alterarProcessoNaCPU();
-					this.tempoRodadoProcessoAtual = 1;
-				}else {
+		if (this.tempoRodadoProcessoAtual < this.getQuantum()) {
+			this.tempoRodadoProcessoAtual += 1;
+		} else {
+			this.ordenarFila();
+
+			try {
+				if (this.fila.get(0).getPrioridade() <= this.processoNaCPU.getPrioridade()) {
+					trocaDeProcesso();
+				} else {
 					this.tempoRodadoProcessoAtual = 1;
 				}
+			} catch (IndexOutOfBoundsException e) {
+				this.tempoRodadoProcessoAtual = 1;
 			}
 		}
-		this.tickAtual += 1;
 	}
-	
+
 	@Override
-	public void ordenarFila() {		
+	public void ordenarFila() {
 		Collections.sort(this.fila, new Comparator<ProcessoInterativo>() {
 			public int compare(ProcessoInterativo processo1, ProcessoInterativo processo2) {
 				ProcessoInterativo p1 = processo1;
 				ProcessoInterativo p2 = processo2;
-				return p1.getPrioridade() < p2.getPrioridade() ? -1 : (p1.getPrioridade() > p2.getPrioridade() ? +1 : 0);
+				return p1.getPrioridade() < p2.getPrioridade() ? -1
+						: (p1.getPrioridade() > p2.getPrioridade() ? +1 : 0);
 			}
 		});
 	}
