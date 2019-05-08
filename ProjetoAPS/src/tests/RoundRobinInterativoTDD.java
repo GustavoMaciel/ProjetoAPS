@@ -399,7 +399,7 @@ class RoundRobinInterativoTDD {
 	 * - Cria escalonador com prioridade
 	 * - Adiciona processo sem prioridade
 	 * - Verifica se exceção foi lançada indicando que tem que ser 
-	 * 	informado a prioridade
+	 * 	informado a prioridade, ou seja, o próximo assert verifica continua não tendo nenhum processo
 	 * */
 	@Test
 	void criaEscalonadorComPrioridade() {
@@ -407,6 +407,9 @@ class RoundRobinInterativoTDD {
 		Assertions.assertThrows(ProcessoInvalidoException.class, () -> {
 			esca.addProcesso("P1");
 		});
+		
+		assertEquals("Nenhum Processo\n", esca.getStatusProcessos());
+		
 	}
 	
 	
