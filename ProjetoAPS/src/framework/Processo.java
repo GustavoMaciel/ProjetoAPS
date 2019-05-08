@@ -38,6 +38,10 @@ public class Processo {
 	public void setTempoExec(int tempoExec) {
 		this.tempoExec = tempoExec;
 	}
+
+	public String toString(){
+		return processoID +" " + tempoExec + " "+tempoExec;
+	}
 	
 
 }
