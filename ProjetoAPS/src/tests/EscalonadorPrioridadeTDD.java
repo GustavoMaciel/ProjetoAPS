@@ -59,6 +59,7 @@ class EscalonadorPrioridadeTDD {
 		Assertions.assertThrows(ProcessoInvalidoException.class, () -> {
 		esca.addProcesso("P1");
 		});
+		assertEquals("Nenhum Processo\n", esca.getStatusProcessos());
 	}
 	
 	/*criar escalonador com prioridade
@@ -175,28 +176,17 @@ class EscalonadorPrioridadeTDD {
 				+ 	 "P1 - WAITING\nQuantum: 3\nTick: 6", esca.getStatusEscalonador());
 		
 	}
-	/* criar escalonador com prioridade
-	 * adicionar 2 processos com prioridade 1
-	 * status -> 1 - P1 (EXECUTANDO)
-	 *  		 Tick = 1
-	 *  		 Matar P1 no em Execução
-	 *  		 Chamar Tick até 2, onde será criado P2 (A concorrência começa em Tick 2)
-	 *  	     2 - P2 (EXECUTANDO) 
-	 * 			 Tick = 5
-	 * 			 Quantum = "default" = 3
-	 */
+	
 	@Test
 	void test21() {//8
 		EscalonadorInterativo esca = new EscalonadorPrioridade();
-		addNProcessos(1, esca, 0, 1);
+		addNProcessos(2, esca, 0, 1);
 		rodaTickNVezes(esca, 2, true);
-		assertEquals("P1 - RUNNING\nQuantum: 3\nTick: 2", esca.getStatusEscalonador());
+		assertEquals("P1 - RUNNING\nP2 - WAITING\nQuantum: 3\nTick: 2", esca.getStatusEscalonador());
 		esca.finalizarProcesso("P1");
-		addNProcessos(1, esca, 1, 1);
-		rodaTickNVezes(esca, 3, true);
-		assertEquals("P2 - RUNNING\nQuantum: 3\nTick: 5", esca.getStatusEscalonador());
-		esca.finalizarProcesso("P2");
 		rodaTickNVezes(esca, 1, true);
+		assertEquals("P2 - RUNNING\nQuantum: 3\nTick: 3", esca.getStatusEscalonador());
+
 	}
 	/* criar escalonador com prioridade
 	 * adicionar 2 processos com prioridade 1
@@ -525,47 +515,87 @@ class EscalonadorPrioridadeTDD {
 		void test32() {
 			EscalonadorInterativo esca = new EscalonadorPrioridade();
 			addNProcessos(1, esca, 0, 3);
+			assertEquals("P1 - WAITING\nQuantum: 3\nTick: 0", esca.getStatusEscalonador());
 			
 			rodaTickNVezes(esca, 2, true);
+			assertEquals("P1 - RUNNING\nQuantum: 3\nTick: 2", esca.getStatusEscalonador());
 			
 			addNProcessos(1, esca, 1, 1);
-			
 			rodaTickNVezes(esca, 1, true);
+			assertEquals("P2 - RUNNING\nP1 - WAITING\nQuantum: 3\nTick: 3", esca.getStatusEscalonador());
+			
 			esca.bloquearProcesso("P2");
 			rodaTickNVezes(esca, 2, true);
-			
 			addNProcessos(1, esca, 2, 4);
+			assertEquals("P1 - RUNNING\nP3 - WAITING\nP2 - BLOCKED\nQuantum: 3\nTick: 5", esca.getStatusEscalonador());
 			
-			rodaTickNVezes(esca, 2, true);
+			rodaTickNVezes(esca, 1, true);
 			esca.bloquearProcesso("P1");
+			assertEquals("P3 - RUNNING\nP2 - BLOCKED\nP1 - BLOCKED\nQuantum: 3\nTick: 6", esca.getStatusEscalonador());
+			
 			rodaTickNVezes(esca, 1, true);
 			
 			esca.retomarProcesso("P2");
+			assertEquals("P3 - RUNNING\nP2 - WAITING\nP1 - BLOCKED\nQuantum: 3\nTick: 7", esca.getStatusEscalonador());
+			
+			rodaTickNVezes(esca, 1, true);
 			addNProcessos(1, esca, 3, 1);
-			
-			rodaTickNVezes(esca, 1, true);
 			esca.retomarProcesso("P1");
-			rodaTickNVezes(esca, 1, true);
 			
-			addNProcessos(1, esca, 4, 2);
-			addNProcessos(1, esca, 5, 2);
-			rodaTickNVezes(esca, 11, true);
-			esca.bloquearProcesso("P4");
-			
-			rodaTickNVezes(esca, 5, true);
-			esca.retomarProcesso("P4");
-			rodaTickNVezes(esca, 5, true);
-			esca.finalizarProcesso("P4");
 			rodaTickNVezes(esca, 2, true);
+			
+			addNProcessos(2, esca, 4, 2);
+			
+			rodaTickNVezes(esca, 10, true);
+			esca.bloquearProcesso("P4");
+			assertEquals("P2 - RUNNING\nP5 - WAITING\nP6 - WAITING\nP1 - WAITING\nP3 - WAITING\nP4 - BLOCKED\nQuantum: 3\nTick: 20", esca.getStatusEscalonador());
+			
+			rodaTickNVezes(esca, 4, true);
+			assertEquals("P2 - RUNNING\nP5 - WAITING\nP6 - WAITING\nP1 - WAITING\nP3 - WAITING\nP4 - BLOCKED\nQuantum: 3\nTick: 24", esca.getStatusEscalonador());
+			
+			rodaTickNVezes(esca, 1, true);
+			esca.retomarProcesso("P4");
+			assertEquals("P2 - RUNNING\nP5 - WAITING\nP6 - WAITING\nP1 - WAITING\nP3 - WAITING\nP4 - WAITING\nQuantum: 3\nTick: 25", esca.getStatusEscalonador());
+			
+			rodaTickNVezes(esca, 4, true);
+			assertEquals("P4 - RUNNING\nP2 - WAITING\nP5 - WAITING\nP6 - WAITING\nP1 - WAITING\nP3 - WAITING\nQuantum: 3\nTick: 29", esca.getStatusEscalonador());
+			
+			rodaTickNVezes(esca, 1, true);
+			esca.finalizarProcesso("P4");
+			assertEquals("P2 - WAITING\nP5 - WAITING\nP6 - WAITING\nP1 - WAITING\nP3 - WAITING\nQuantum: 3\nTick: 30", esca.getStatusEscalonador());
+			//NOSSA DECISÃO É QUE QUANDO UM PROCESSO É DELETADO, TODOS FICAM EM ESPERA. 
+			
+			rodaTickNVezes(esca, 1, true);
+			assertEquals("P2 - RUNNING\nP5 - WAITING\nP6 - WAITING\nP1 - WAITING\nP3 - WAITING\nQuantum: 3\nTick: 31", esca.getStatusEscalonador());
+			
+			rodaTickNVezes(esca, 1, true);
 			esca.finalizarProcesso("P2");
-			rodaTickNVezes(esca, 8, true);
+			assertEquals("P5 - WAITING\nP6 - WAITING\nP1 - WAITING\nP3 - WAITING\nQuantum: 3\nTick: 32", esca.getStatusEscalonador());
+			//NOSSA DECISÃO É QUE QUANDO UM PROCESSO É DELETADO, TODOS FICAM EM ESPERA. 
 			
+			rodaTickNVezes(esca, 3, true);
+			assertEquals("P5 - RUNNING\nP6 - WAITING\nP1 - WAITING\nP3 - WAITING\nQuantum: 3\nTick: 35", esca.getStatusEscalonador());
+			
+			rodaTickNVezes(esca, 3, true);
+			assertEquals("P6 - RUNNING\nP5 - WAITING\nP1 - WAITING\nP3 - WAITING\nQuantum: 3\nTick: 38", esca.getStatusEscalonador());
+			
+			rodaTickNVezes(esca, 2, true);
 			esca.bloquearProcesso("P5");
+			assertEquals("P6 - RUNNING\nP1 - WAITING\nP3 - WAITING\nP5 - BLOCKED\nQuantum: 3\nTick: 40", esca.getStatusEscalonador());
 			
-			rodaTickNVezes(esca, 5, true);
+			rodaTickNVezes(esca, 2, true);
+			assertEquals("P6 - RUNNING\nP1 - WAITING\nP3 - WAITING\nP5 - BLOCKED\nQuantum: 3\nTick: 42", esca.getStatusEscalonador());
+			
+			rodaTickNVezes(esca, 3, true);
+			esca.retomarProcesso("P5");
+			assertEquals("P6 - RUNNING\nP1 - WAITING\nP3 - WAITING\nP5 - WAITING\nQuantum: 3\nTick: 45", esca.getStatusEscalonador());
+			
+			rodaTickNVezes(esca, 1, true);
 			esca.finalizarProcesso("P6");
+			assertEquals("P5 - WAITING\nP1 - WAITING\nP3 - WAITING\nQuantum: 3\nTick: 46", esca.getStatusEscalonador());
 			
-			
+			rodaTickNVezes(esca, 1, true);
+			assertEquals("P5 - RUNNING\nP1 - WAITING\nP3 - WAITING\nQuantum: 3\nTick: 47", esca.getStatusEscalonador());
 			
 		}
 		/*criar escalonador com prioridade
