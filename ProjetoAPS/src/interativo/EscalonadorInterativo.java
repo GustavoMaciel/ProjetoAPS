@@ -115,7 +115,12 @@ public class EscalonadorInterativo {
 		ProcessoInterativo processo = this.procurarProcesso(processoID, this.filaIO);
 		if(processo != null) {
 			this.filaIO.remove(processo);
-			processo.setStatus(StatusProcesso.WAITING);
+			//CORRIGIR PRO BUG DO test32() onde ele volta waiting quando deveria estar rodando
+			if(this.processoNaCPU == null) {
+				processo.setStatus(StatusProcesso.RUNNING);
+			}else {
+				processo.setStatus(StatusProcesso.WAITING);
+			}
 			this.fila.add(processo);
 		}
 	}
