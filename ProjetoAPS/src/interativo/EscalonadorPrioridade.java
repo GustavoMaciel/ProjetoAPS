@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import exceptions.ProcessoInvalidoException;
+import framework.StatusProcesso;
 
 public class EscalonadorPrioridade extends RoundRobinInterativo {
 
@@ -18,6 +19,10 @@ public class EscalonadorPrioridade extends RoundRobinInterativo {
 	@Override
 	public void addProcesso(String processoID) {
 		throw new ProcessoInvalidoException("Escalonador de Prioridade só pode ter processos com prioridade");
+	}
+	@Override
+	public void addProcesso(String processoID, int prioridade) {
+		this.fila.add(this.criarProcesso(processoID, StatusProcesso.WAITING, prioridade));
 	}
 	
 	@Override
