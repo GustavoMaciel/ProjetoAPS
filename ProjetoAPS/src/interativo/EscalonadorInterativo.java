@@ -62,14 +62,10 @@ public class EscalonadorInterativo {
 	}
 	
 	public void addProcesso(String processoID, int prioridade) {
-		if(!(this instanceof EscalonadorPrioridade)) 
-			throw new ProcessoInvalidoException("Somente EscalonadorPrioridade pode criar processo com prioridade");
 		this.fila.add(this.criarProcesso(processoID, StatusProcesso.WAITING, prioridade));
 	}
 
 	public void addProcesso(String processoID) {
-		if(this instanceof EscalonadorPrioridade) 
-			throw new ProcessoInvalidoException("Escalonador de Prioridade só pode ter processos com prioridade");
 		StatusProcesso status = StatusProcesso.WAITING;
 		this.fila.add(this.criarProcesso(processoID, status));
 	}

@@ -3,6 +3,8 @@ package interativo;
 import java.util.Collections;
 import java.util.Comparator;
 
+import exceptions.ProcessoInvalidoException;
+
 public class EscalonadorPrioridade extends RoundRobinInterativo {
 
 	public EscalonadorPrioridade() {
@@ -11,6 +13,11 @@ public class EscalonadorPrioridade extends RoundRobinInterativo {
 
 	public EscalonadorPrioridade(int quantum) {
 		super(quantum);
+	}
+	
+	@Override
+	public void addProcesso(String processoID) {
+		throw new ProcessoInvalidoException("Escalonador de Prioridade só pode ter processos com prioridade");
 	}
 	
 	@Override
