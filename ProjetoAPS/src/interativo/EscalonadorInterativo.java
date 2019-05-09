@@ -118,10 +118,12 @@ public class EscalonadorInterativo {
 			//CORRIGIR PRO BUG DO test32() onde ele volta waiting quando deveria estar rodando
 			if(this.processoNaCPU == null) {
 				processo.setStatus(StatusProcesso.RUNNING);
+				this.processoNaCPU = processo;
 			}else {
 				processo.setStatus(StatusProcesso.WAITING);
+				this.fila.add(processo);
 			}
-			this.fila.add(processo);
+			
 		}
 	}
 	
