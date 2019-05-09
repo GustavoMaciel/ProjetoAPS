@@ -102,8 +102,8 @@ public class EscalonadorInterativo {
 		ProcessoInterativo processo = this.procurarProcesso(processoID, this.fila);
 		if(processo == null && this.processoNaCPU.getProcessoID().equals(processoID)) {
 			processo = this.processoNaCPU;
-			this.processoNaCPU = null;
-		}
+			this.alterarProcessoNaCPU();
+			}
 		if(processo != null) {
 			this.fila.remove(processo);
 			processo.setStatus(StatusProcesso.BLOCKED);
